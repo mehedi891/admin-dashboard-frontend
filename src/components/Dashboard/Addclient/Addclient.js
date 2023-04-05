@@ -2,16 +2,13 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { DefaultContext } from "../../../context/DefaultContext/Context";
-import useGetMonthSummaryData from "../../../hooks/useGetMonthSummaryData";
+
 
 import "./Addclient.css";
 
 const Addclient = () => {
   const navigate = useNavigate();
-  const [getMonthSummary] = useGetMonthSummaryData();
   const {addStoreTitle,setaAdStoreTitle} = useContext(DefaultContext);
-
-
   const {currMonth,currYear} = addStoreTitle;
  
   //client data get and create oibject
@@ -46,41 +43,44 @@ const Addclient = () => {
  
 
     // variable with condition for summary data
-    const uniqueCalls = getMonthSummary.error 
-    ? 1 
-    : getMonthSummary?.summary?.uniqueCalls + 1;
+    // const uniqueCalls = getMonthSummary.error 
+    // ? 1 
+    // : getMonthSummary?.summary?.uniqueCalls + 1;
 
-    let totalAskRev = !getMonthSummary.error ? getMonthSummary?.summary?.totalAskRev : parseInt(0);
-    totalAskRev = (reviewAsk === "yes") ? totalAskRev + 1 : totalAskRev;
+    // let totalAskRev = !getMonthSummary.error ? getMonthSummary?.summary?.totalAskRev : parseInt(0);
+    // totalAskRev = (reviewAsk === "yes") ? totalAskRev + 1 : totalAskRev;
    
 
 
-    let totalReviewGive = !getMonthSummary.error ? getMonthSummary?.summary?.totalReviewGive : parseInt(0);
-      totalReviewGive = (reviewGiven === "yes") ? totalReviewGive + 1 : totalReviewGive;
+    // let totalReviewGive = !getMonthSummary.error ? getMonthSummary?.summary?.totalReviewGive : parseInt(0);
+    //   totalReviewGive = (reviewGiven === "yes") ? totalReviewGive + 1 : totalReviewGive;
 
      
 
       
-    let totalStore = getMonthSummary.error
-     ? 1 
-     : getMonthSummary?.summary?.totalStore + 1;
+    // let totalStore = getMonthSummary.error
+    //  ? 1 
+    //  : getMonthSummary?.summary?.totalStore + 1;
     
-     let totalCallCurrMonth = getMonthSummary.error
-     ? 1 
-     : getMonthSummary?.summary?.totalCallCurrMonth + 1;
+    //  let totalCallCurrMonth = getMonthSummary.error
+    //  ? 1 
+    //  : getMonthSummary?.summary?.totalCallCurrMonth + 1;
+
+    const incTotalAskRev = reviewAsk === "yes" ? true : false;
+    const incTotalReviewGive = reviewGiven === "yes" ? true : false;
      
     const summaryObj = {
-      uniqueCalls,
-      totalAskRev,
-      totalReviewGive,
-      totalStore,
-      totalCallCurrMonth
+      incUniqueCalls: true,
+      incTotalAskRev,
+      incTotalReviewGive,
+      incTotalStore : true,
+      incTotalCallCurrMonth:true
      
     };
 
     //post data to client  api
 
-    fetch("http://localhost:5001/api/client", {
+    fetch("http://localhost:3001/api/client", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -110,7 +110,7 @@ const Addclient = () => {
     //post data to summary API
     const upSummaryFnc = () =>{
 
-    fetch(`http://localhost:5001/api/summary/${currMonth}-${currYear}`,{
+    fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`,{
         method:'PUT',
         headers:{
             'content-type': 'application/json'
@@ -253,6 +253,7 @@ const Addclient = () => {
                           addStoreTitle.reviewGiven === "no" ? true : false
                         }
                         placeholder="Write a reason for not given"
+                        defaultValue={addStoreTitle.reviewAsk === 'no' ? 'Not given yet' : ''}
                       />
                     </div>
                   </div>

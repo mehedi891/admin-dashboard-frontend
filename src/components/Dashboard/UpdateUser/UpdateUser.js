@@ -7,7 +7,7 @@ function UpdateUser() {
     const {email} = useParams();
     const navigate = useNavigate();
     useEffect(()=>{
-        fetch(`http://localhost:5001/api/user/${email}`)
+        fetch(`http://localhost:3001/api/user/${email}`)
         .then(res => res.json())
         .then(data =>{
             setExistUser(data)
@@ -28,7 +28,7 @@ function UpdateUser() {
         //update a user api
 
 
-         fetch(`http://localhost:5001/api/user/${existUser._id}`,{
+         fetch(`http://localhost:3001/api/user/${existUser._id}`,{
             method:'PUT',
             headers:{
                 'content-type': 'application/json'

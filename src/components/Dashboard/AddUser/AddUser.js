@@ -17,7 +17,7 @@ e.preventDefault();
 
    //create a user in database
 
-   fetch(`http://localhost:5001/api/user/register`,{
+   fetch(`http://localhost:3001/api/user/register`,{
     method:'POST',
     headers:{
         'content-type': 'application/json'

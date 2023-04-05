@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 
 const useSummaryget = () =>{
@@ -7,7 +7,7 @@ const useSummaryget = () =>{
 
     useEffect(()=>{
 
-        fetch('http://localhost:5000/summary')
+        fetch('http://localhost:3001/summary')
         .then(res => res.json())
         .then(data => setGetSummary(data))
 

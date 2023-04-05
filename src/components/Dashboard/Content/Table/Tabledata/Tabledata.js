@@ -44,7 +44,7 @@ const Tabledata = ({client,handleCallThisMonth,deleteClientTopage,clients}) => {
             <img className='icon' src ={delete_icon} alt='Delete'/>
             </div>
             }</td>
-        <td>{callThisMonth}</td>
+        {/* <td>{callThisMonth}</td> */}
     </tr>
     );
 };

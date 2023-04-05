@@ -25,7 +25,6 @@ const Content = () => {
 
     const [clients, setClients] = useState([]);
     const [allCLient] = useGetClientData();
-   
     const [deleteClient,setDeleteClient] = useState([]);
     //filter search result and set state
     const [searchEmpty, setSearchEmpty] = useState([]);
@@ -41,7 +40,7 @@ const Content = () => {
     const {currMonth,currYear} = addStoreTitle;
     
     useEffect(() => {
-        fetch(`http://localhost:5001/api/client/?page=${page}&size=${size}`)
+        fetch(`http://localhost:3001/api/client/?page=${page}&size=${size}`)
             .then(res => res.json())
             .then(data => {
                 setClients(data);
@@ -54,12 +53,13 @@ const Content = () => {
 
 
     useEffect(()=>{
-        fetch(`http://localhost:5001/api/summary/${currMonth}-${currYear}`)
+        fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/total`)
         .then(res => res.json())
         .then(data => {
             if(data.summary){
             setGetMonthSummaryData(data.summary);
-            setMonthName(data.monthName)
+            setMonthName(data.monthName);
+            
             }
             else{
                 setGetMonthSummaryData(data)
@@ -73,18 +73,20 @@ const Content = () => {
 
     //increase call count by increasing no of class
 //console.log('getMonthSummaryData', getMonthSummaryData);
-    const handleCallThisMonth = (clickClientId) => {
+    const handleCallThisMonth = async (clickClientId) => {
         
         
         const getUpdateClientCall = clients.find(client => client._id === clickClientId);
+         
         const increaseCalls = parseInt(getUpdateClientCall.noOfCalls) + 1;
         const callThisMonth = getUpdateClientCall.callThisMonth === 0 ? getUpdateClientCall.callThisMonth + 1 : getUpdateClientCall.callThisMonth;
         const newUpdatedObj = { noOfCalls: increaseCalls,callThisMonth}
-        console.log(newUpdatedObj);
        
        if(window.confirm('Are you sure want to increase')){
+        
+
         //post client id to server
-        const url = `http://localhost:5001/api/client/${clickClientId}`
+        const url = `http://localhost:3001/api/client/${clickClientId}`
         fetch(url, {
             method: 'PUT',
             headers: {
@@ -97,25 +99,29 @@ const Content = () => {
             .then(data => {
 
                 setCallThisMonth(data);
-                console.log(data)
+                //console.log(data)
             })
             .catch(error =>{
-                console.log(error);
+                //console.log(error);
             })
 
              // update data to summary API total call and total store count
             
-            let totalStore = getMonthSummaryData.error ? parseInt(0) : getMonthSummaryData?.totalStore; 
+            // let totalStore = getMonthSummaryData.error ? parseInt(0) : getMonthSummaryData?.totalStore; 
 
-             totalStore = getUpdateClientCall.callThisMonth === 0 ?  totalStore + 1 : totalStore;
-             console.log('call this month',getMonthSummaryData.totalStore);
+            //  totalStore = getUpdateClientCall.callThisMonth === 0 ?  totalStore + 1 : totalStore;
+        
 
-            const totalCallCurrMonth = getMonthSummaryData.error ?  1 : getMonthSummaryData?.totalCallCurrMonth + 1; 
+            // const totalCallCurrMonth = getMonthSummaryData.error ?  1 : getMonthSummaryData?.totalCallCurrMonth + 1; 
+
+            const incTotalStore = getUpdateClientCall.callThisMonth === 0 ? true : false;
+            const incTotalCallCurrMonth =  true ;
             
-             const updateSummaryData = {totalStore,totalCallCurrMonth}
+             const updateSummaryData = {incTotalStore,incTotalCallCurrMonth}
                //update data to summary API
- 
-         fetch(`http://localhost:5001/api/summary/${currMonth}-${currYear}`,{
+            const urlSum = `http://localhost:3001/api/summary/${currMonth}-${currYear}/${getUpdateClientCall.app}`;
+            console.log(urlSum)
+         fetch(urlSum,{
              method:'PUT',
              headers:{
                  'content-type': 'application/json'
@@ -141,7 +147,7 @@ const Content = () => {
 
 const deleteClientTopage = (id) =>{
     if(window.confirm('Are you sure? want to Delete!!!')){
-    fetch(`http://localhost:5001/api/client/${id}`,{
+    fetch(`http://localhost:3001/api/client/${id}`,{
         method: 'DELETE',
     })
     .then(res => res.json())
@@ -201,8 +207,7 @@ const deleteClientTopage = (id) =>{
     }
 
   
-  
- console.log(loading);
+
   
 
     return (
@@ -212,11 +217,11 @@ const deleteClientTopage = (id) =>{
                <div className='summaryShowDashboardMainDiv'>
                     <h2>{monthName}</h2>
                     <div className='summaryShowDashboard'>
-                    <p><span>Total Unique calls</span> {getMonthSummaryData?.uniqueCalls ?getMonthSummaryData?.uniqueCalls : 0 }</p>
-                        <p><span>Total Ask reviews</span>{getMonthSummaryData?.totalAskRev}</p>
-                        <p><span>Total Given review</span>{getMonthSummaryData?.totalReviewGive}</p>
-                        <p><span>Total Store call this Month</span> {getMonthSummaryData?.totalStore}</p>
-                        <p><span>Total Call This Month</span>{getMonthSummaryData?.totalCallCurrMonth}</p>
+                    <p><span>Total Unique calls</span> {getMonthSummaryData?.uniqueCalls !== undefined ?getMonthSummaryData?.uniqueCalls : 0 }</p>
+                        <p><span>Total Ask reviews</span>{getMonthSummaryData.totalAskRev !== undefined?getMonthSummaryData?.totalAskRev:0}</p>
+                        <p><span>Total Given review</span>{getMonthSummaryData.totalReviewGive !==undefined?getMonthSummaryData?.totalReviewGive:0}</p>
+                        <p><span>Total Store call this Month</span> {getMonthSummaryData.totalStore !== undefined ? getMonthSummaryData?.totalStore:0}</p>
+                        <p><span>Total Call This Month</span>{getMonthSummaryData.totalCallCurrMonth !== undefined ?getMonthSummaryData?.totalCallCurrMonth:0}</p>
                     </div>
                        
                     </div>
@@ -269,7 +274,7 @@ const deleteClientTopage = (id) =>{
                             <th>Reason</th>
                             <th>Comment</th>
                             <th>Upadate/Delete</th>
-                            <th>Call this month</th>
+                            {/* <th>Call this month</th> */}
                         </tr>
                     </thead>
                     <tbody>

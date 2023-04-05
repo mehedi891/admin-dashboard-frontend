@@ -9,6 +9,7 @@ import AddUser from './components/Dashboard/AddUser/AddUser';
 import Dashboard from './components/Dashboard/Dashboard';
 import Header from './components/Dashboard/Header/Header';
 import Login from './components/Dashboard/Login/Login';
+import ResetPassword from './components/Dashboard/Login/ResetPassword';
 import ManageUser from './components/Dashboard/ManageUser/ManageUser';
 import Sidebar from './components/Dashboard/Sidebar/Sidebar';
 import Updateclient from './components/Dashboard/Updateclient/Updateclient';
@@ -62,7 +63,11 @@ function App() {
          </AdminRoute>
         }></Route>
 
-
+<Route path='/reset-password' element={
+          <AdminRoute>
+            <ResetPassword></ResetPassword>
+         </AdminRoute>
+        }></Route>
 <Route path='/updateuser/:email' element={
           <AdminRoute>
          <UpdateUser></UpdateUser>

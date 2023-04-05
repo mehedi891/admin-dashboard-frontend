@@ -6,7 +6,7 @@ const useGetAllUsers = () => {
 
 
     useEffect(() => {
-        fetch('http://localhost:5001/api/user/')
+        fetch('http://localhost:3001/api/user/')
         .then(res => res.json())
         .then(data => setUsers(data))
         .catch(error => {

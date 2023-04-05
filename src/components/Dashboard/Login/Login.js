@@ -21,7 +21,7 @@ const navigate = useNavigate();
 
         //login api 
 
-        fetch('http://localhost:5001/api/user/login',{
+        fetch('http://localhost:3001/api/user/login',{
             method:'POST',
             headers:{
                 'content-type': 'application/json'
@@ -50,7 +50,7 @@ const navigate = useNavigate();
 
         // update online status true
 
-        fetch(`http://localhost:5001/api/user/${email}`,{
+        fetch(`http://localhost:3001/api/user/${email}`,{
             method:'PUT',
             headers:{
                 'content-type': 'application/json'
@@ -68,38 +68,7 @@ const navigate = useNavigate();
    
     
         
-    const handleResetPassword = (e) =>{
-        e.preventDefault();
-
-        const email = e.target.email.value.trim();
-        const password = e.target.password.value.trim();
-
-        const userObj = {password};
-
-        fetch(`http://localhost:5001/api/user/${email}`,{
-            method:'PUT',
-            headers:{
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(userObj)
-        })
-        .then(res => res.json())
-        .then(data => {
-          console.log(data.acknowledged)
-           if(data.acknowledged === true){
-            setShowDiv(true)
-        }
-        else{
-            setLogErrorMsg(data.message);
-        }
-        })
-        .catch(error =>{
-            console.log(error);
-        })   
-
-        console.log(userObj)
-    }
-        console.log(dataTemp);
+    
     //console.log(userLogToken);
     return (
         <div className='login-container'>
@@ -111,26 +80,10 @@ const navigate = useNavigate();
                     <h4>Password</h4>
                     <input type="password" name="password" placeholder='enter your pass' required/>
                 </div>
-               { logErrorMsg !== ''? <p className="errorMsg">{logErrorMsg} <Link onClick={()=>setShowDiv(false)}>Forget Pass !?! Reset Here</Link></p>:'' }
+               { logErrorMsg !== ''? <p className="errorMsg">{logErrorMsg} {dataTemp.login.role === 'admin' && <Link onClick={()=>setShowDiv(false)}>Forget Pass !?! Reset Here</Link>}</p>:'' }
                
                 <div className="loginBtnDiv">
                 <input type="submit" className='btn loginBtn' value="Login" />
-                </div>
-            </form>
-
-
-
-            <form className="loginForm" onSubmit={handleResetPassword} style={{display: showDiv ? 'none' : 'block' }}>
-                <div className="emailPass flex-column">
-                    <h4>Email</h4>
-                    <input type="text" name="email" placeholder='enter your email' required/>
-                    <h4>New Password</h4>
-                    <input type="password" name="password" placeholder='enter your pass' required/>
-                </div>
-               <Link onClick={()=>setShowDiv(true)}>Remember Pass!! Login here</Link>
-               
-                <div className="loginBtnDiv">
-                <input type="submit" className='btn loginBtn' value="Reset Password" />
                 </div>
             </form>
         </div>

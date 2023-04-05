@@ -10,8 +10,11 @@ function Context({children}) {
   }else{
     decodeUser ={}
   }
-  console.log(decodeUser)
-  const [addStoreTitle, setaAdStoreTitle] = useState({reviewAsk:'yes',reviewGiven:'no',currMonth:new Date().getMonth() + 1,currYear: new Date().getFullYear()});
+  
+  const currMonthVal = new Date().getMonth() + 1;
+
+  const currMonth = currMonthVal.toString().length === 1 ? '0' + currMonthVal : currMonthVal ;
+  const [addStoreTitle, setaAdStoreTitle] = useState({reviewAsk:'yes',reviewGiven:'no',currMonth,currYear: new Date().getFullYear()});
 
   const [dataTemp,setDataTemp] = useState({login:decodeUser});
 

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DefaultContext } from '../../../context/DefaultContext/Context';
+import efoliLogo from '../../../imageIcon/efoliLogo.svg';
 
 import './Header.css';
 const Header = () => {
@@ -12,7 +13,7 @@ const Header = () => {
         localStorage.removeItem('loginToken');
 
         // set online status false in API 
-         fetch(`http://localhost:5001/api/user/${dataTemp.login.email}`,{
+         fetch(`http://localhost:3001/api/user/${dataTemp.login.email}`,{
             method:'PUT',
             headers:{
                 'content-type': 'application/json'
@@ -31,7 +32,7 @@ const Header = () => {
 
 
     useEffect(()=>{
-        fetch('http://localhost:5001/api/user/online/useronline')
+        fetch('http://localhost:3001/api/user/online/useronline')
      .then(res => res.json())
      .then(data => {
         setOnlineUsers(data);
@@ -41,10 +42,11 @@ const Header = () => {
          console.log(error)
      })
      },[dataTemp.login,onlineStat]);
-console.log(onlineUsers)
+
     return (
         <div className='topbar'>
-        <h4>Client Dashboard</h4>
+        {/* <h4>Client Dashboard</h4> */}
+        <img className='efoliLogo' src={efoliLogo} alt="eFoli" />
         <div className="onlineUserMainDiv">
             <h3>Now on Online:</h3>
             {

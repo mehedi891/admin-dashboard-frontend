@@ -6,7 +6,7 @@ const useGetClientCount = () => {
 
     useEffect(() => {
         
-            fetch('http://localhost:5001/api/client/allclientcount')
+            fetch('http://localhost:3001/api/client/allclientcount')
             .then(res => res.json())
             .then(data => setClientCount(data))
             .catch(error => {

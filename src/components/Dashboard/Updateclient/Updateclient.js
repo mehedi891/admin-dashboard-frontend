@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { DefaultContext } from '../../../context/DefaultContext/Context';
-import useGetMonthSummaryData from '../../../hooks/useGetMonthSummaryData';
+
 
 const Updateclient = () => {
     const { store } = useParams();
@@ -10,12 +10,12 @@ const Updateclient = () => {
     const {currMonth,currYear} = addStoreTitle;
     const [updateClientData,setUpdateClientData] = useState({});
     //call custom hooks for summary data by month
-    const [getMonthSummary] = useGetMonthSummaryData();
+    
      //conditional destructure from summary API data
 
     useEffect(()=>{
 
-        fetch(`http://localhost:5001/api/client/${store}`)
+        fetch(`http://localhost:3001/api/client/${store}`)
         .then(res => res.json())
         .then(data => {
             setUpdateClientData(data)
@@ -25,7 +25,7 @@ const Updateclient = () => {
     },[store]);
   
    const navigate = useNavigate();
-console.log(updateClientData.reviewAsk);
+
     //client data get and create oibject 
     const handleUpdateClient = e => {
        
@@ -45,26 +45,32 @@ console.log(updateClientData.reviewAsk);
 
         const updatedClient = { storeUrl, bType, reasonFromGivRev, reasonFromAskRev, reviewGiven, reviewAsk, comment, noOfCalls,app }
 
-
+     
 
          // variable with condition for summary data
-
-         let totalAskRev = !getMonthSummary.error ? getMonthSummary?.summary?.totalAskRev : parseInt(0);
-         totalAskRev = (reviewAsk === "yes") ? totalAskRev + 1 : totalAskRev;
-        
+         const increaseCall = e.target.increaseCall.checked;
+         const incTotalStore = updateClientData.callThisMonth === 0 ? true : false;
+                     const incTotalCallCurrMonth =  true ;
+         const incTotalAskRev = reviewAsk === "yes" & reviewAsk !== updateClientData.reviewAsk ? true : false;
      
-     
-         let totalReviewGive = !getMonthSummary.error ? getMonthSummary?.summary?.totalReviewGive : parseInt(0);
-           totalReviewGive = (reviewGiven === "yes") ? totalReviewGive + 1 : totalReviewGive;
+         const incTotalReviewGive = reviewGiven === "yes" & reviewGiven !== updateClientData.reviewGiven ? true : false;
 
-
-            
-         
-         const summaryObj = {totalAskRev,totalReviewGive};
-         console.log(summaryObj)
+         const summaryObj = increaseCall ? {incTotalAskRev,incTotalReviewGive,incTotalStore,incTotalCallCurrMonth} : {incTotalAskRev,incTotalReviewGive};
+         //console.log(summaryObj)
        // post data to api 
+if(
+    storeUrl !== updateClientData.storeUrl || 
+    bType !== updateClientData.bType ||
+    reasonFromGivRev !== updateClientData.reasonFromGivRev ||
+    reasonFromAskRev !== updateClientData.reasonFromAskRev ||
+    comment !== updateClientData.comment ||
+    app !== updateClientData.app ||
+    reviewAsk !== updateClientData.reviewAsk || 
+    reviewGiven !== updateClientData.reviewGiven 
+    ){
 
-        fetch(`http://localhost:5001/api/client/${updateClientData._id}`,{
+
+        fetch(`http://localhost:3001/api/client/${updateClientData._id}`,{
             method:'PUT',
             headers:{
                 'content-type': 'application/json'
@@ -74,13 +80,11 @@ console.log(updateClientData.reviewAsk);
         .then(res => res.json())
         .then(data => {
             console.log(data)
-        })
-
- 
-         // send updated data to API to upadte current data
-
-
-        fetch(`http://localhost:5001/api/summary/${currMonth}-${currYear}`,{
+            if(data.updatedClient.acknowledged){
+                toast.success('Updated Client Data  Successfully');
+                 // send updated data to API to upadte current data
+         if(reviewAsk !== updateClientData.reviewAsk || reviewGiven !== updateClientData.reviewGiven){
+            fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`,{
             method:'PUT',
             headers:{
                 'content-type': 'application/json'
@@ -91,13 +95,36 @@ console.log(updateClientData.reviewAsk);
         .then(data => {
            
             if(data.result.acknowledged){
-                toast.success('Updated Client Data  Successfully')
+                toast.success('Updated Summary Data  Successfully')
                  navigate('/')
             }
             else{
-                toast.error('Data Not Updated Successfully')
+                toast.error('Something wrong to update Summary data')
             }
-        });
+        })
+        .catch(error =>{
+            toast.error(error.message)
+        })
+        console.log('if');
+         }
+         else{
+            toast.warn('Nothing changes in Summary Data')
+            navigate('/')
+         }
+                 
+            }
+            else{
+                toast.error('Something went wrong in Client Data')
+            }
+        })
+        .catch(error =>{
+            toast.error(error.message)
+        })
+}else{
+    toast.warn('Nothing changes in Client Data')
+}
+
+console.log(incTotalAskRev,incTotalReviewGive)
 
 
     }
@@ -177,6 +204,10 @@ console.log(updateClientData.reviewAsk);
               <option value="mv">Multivariants</option>
               <option value="dr">Discount Ray</option>
             </select>
+          </div>
+          <div className='increaseCall'>
+            <label>Increase Call</label>
+                <input type="checkbox" name="increaseCall" id="increaseCallInp" />
           </div>
                 </div>
                     }

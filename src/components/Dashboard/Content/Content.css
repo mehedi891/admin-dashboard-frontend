@@ -206,3 +206,12 @@
   display: inline-block;
   margin-right: 9px;
 }
+.increaseCall {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.increaseCall input {
+  width: 20px;
+  cursor: pointer;
+}

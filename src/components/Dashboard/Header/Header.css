@@ -8,7 +8,7 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 4rem;
+  padding: 10px 2rem;
   max-width: 100%;
   box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
 }
@@ -34,7 +34,7 @@ a {
 
 .loginLogoutText {
   color: #000;
-  font-size: 19px;
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: 1.6px;
 }
@@ -67,4 +67,17 @@ a {
   bottom: 0;
   right: 0;
   position: absolute;
+}
+.efoliLogo {
+  max-width: 60px;
+}
+
+.loginLogout {
+  background: #8bd832;
+  padding: 8px 30px;
+  border-radius: 9px;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+}
+.loginLogout:hover {
+  background: lightgreen;
 }
