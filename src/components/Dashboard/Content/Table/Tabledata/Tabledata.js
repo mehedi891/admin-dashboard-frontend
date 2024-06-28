@@ -11,13 +11,13 @@ import update_icon from '../../../../../imageIcon/update_icon.svg';
 const Tabledata = ({client,handleCallThisMonth,deleteClientTopage,clients}) => {
     const navigate = useNavigate();
     const {dataTemp} = useContext(DefaultContext);
-    const {_id,storeUrl,bType,noOfCalls,reviewAsk,reviewGiven,reasonFromAskRev,reasonFromGivRev,comment,callThisMonth,app} = client;
+    const {_id,storeUrl,bType,noOfCalls,reviewAsk,reviewGiven,reasonFromAskRev,reasonFromGivRev,comment,callThisMonth,app,clientType,reviewAskCount} = client;
     const updateClientTopage = (storeurl) =>{
         navigate(`/upadteclient/${storeurl}`);
     }
 
     return (
-        <tr>
+        <tr className={`${clientType}Bg`}>
         <td className='clSeriel'>{clients.indexOf(client) + 1}</td>
         <td className='appImg'>
             {app === 'ib' &&  <img src={logoIb} alt='ib' /> } 
@@ -27,7 +27,7 @@ const Tabledata = ({client,handleCallThisMonth,deleteClientTopage,clients}) => {
         <td className='clstoreUrl'>{storeUrl}</td>
         <td className='clbType'>{bType}</td>
         <td className='clNocalls'>{noOfCalls}</td>
-        <td className='clrevAsk'>{reviewAsk}</td>
+        <td className='clrevAsk'>{reviewAsk} <span>Asked: {reviewAskCount !== undefined ? reviewAskCount  : '0'}</span></td>
         <td className='clrevGiv'>{reviewGiven}</td>
         <td className='clCalledMonth'>
             <div title='Count' onClick={()=>handleCallThisMonth(_id)}>

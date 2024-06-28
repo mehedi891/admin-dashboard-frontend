@@ -4,7 +4,7 @@ a {
 .topbar {
   width: 100%;
   height: 70px;
-  background-color: #ff584136;
+  background-color: var(--dashbg);
   display: flex;
   justify-content: space-between;
   align-items: center;

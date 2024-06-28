@@ -19,6 +19,7 @@ const Updateclient = () => {
         .then(res => res.json())
         .then(data => {
             setUpdateClientData(data)
+            console.log(data)
         })
         .catch(console.error())
         

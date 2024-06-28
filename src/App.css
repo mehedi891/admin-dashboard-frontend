@@ -11,6 +11,8 @@
   --btnHover: #DBE0D6;
   --textPrimary: #EAEFD3;
   --textSecondary: #000;
+  --dashbg : #f3f3f3;
+  --tableBodyBg : #f8f8f8;
 }
 
 input {
@@ -84,3 +86,5 @@ button{
   min-width: 70px;
   min-height: 30px;
 }
+
+

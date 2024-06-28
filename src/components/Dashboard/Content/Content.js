@@ -12,20 +12,20 @@ import Tabledata from './Table/Tabledata/Tabledata';
 
 const Content = () => {
     //for pagination
-    const [clientCount] = useGetClientCount()
-    const [page,setPage] = useState(0);
-    const [size,setSize] = useState(10);
+    const [clientCount] = useGetClientCount();
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(10);
 
-    const pages = Math.ceil(clientCount/size)
+    const pages = Math.ceil(clientCount / size)
 
-    const {addStoreTitle, setaAdStoreTitle} = useContext(DefaultContext);
-    const [monthName,setMonthName] = useState('');
+    const { addStoreTitle, setaAdStoreTitle } = useContext(DefaultContext);
+    const [monthName, setMonthName] = useState('');
     const navigate = useNavigate();
     //load data from API
 
     const [clients, setClients] = useState([]);
     const [allCLient] = useGetClientData();
-    const [deleteClient,setDeleteClient] = useState([]);
+    const [deleteClient, setDeleteClient] = useState([]);
     //filter search result and set state
     const [searchEmpty, setSearchEmpty] = useState([]);
     const [searchVal, setSearchVal] = useState('');
@@ -35,10 +35,10 @@ const Content = () => {
     //call summary API current month  state
     const [getMonthSummaryData, setGetMonthSummaryData] = useState({});
     // loading spiner
-    const [loading,setLoading] = useState(true);
-      
-    const {currMonth,currYear} = addStoreTitle;
-    
+    const [loading, setLoading] = useState(true);
+
+    const { currMonth, currYear } = addStoreTitle;
+
     useEffect(() => {
         fetch(`http://localhost:3001/api/client/?page=${page}&size=${size}`)
             .then(res => res.json())
@@ -47,124 +47,126 @@ const Content = () => {
                 setSearchEmpty(data)
                 setLoading(false)
             })
-            
-
-    }, [callThisMonth,deleteClient,page,size]);
 
 
-    useEffect(()=>{
+    }, [callThisMonth, deleteClient, page, size]);
+
+
+    useEffect(() => {
         fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/total`)
-        .then(res => res.json())
-        .then(data => {
-            if(data.summary){
-            setGetMonthSummaryData(data.summary);
-            setMonthName(data.monthName);
-            
-            }
-            else{
-                setGetMonthSummaryData(data)
-            }
-        })
-        .catch(error =>{
-            setGetMonthSummaryData(error)
-        })
-    },[currMonth,currYear,callThisMonth]);
+            .then(res => res.json())
+            .then(data => {
+                if (data.summary) {
+                    setGetMonthSummaryData(data.summary);
+                    setMonthName(data.monthName);
+
+                }
+                else {
+                    setGetMonthSummaryData(data)
+                }
+            })
+            .catch(error => {
+                setGetMonthSummaryData(error)
+            })
+    }, [currMonth, currYear, callThisMonth]);
 
 
     //increase call count by increasing no of class
-//console.log('getMonthSummaryData', getMonthSummaryData);
+    //console.log('getMonthSummaryData', getMonthSummaryData);
     const handleCallThisMonth = async (clickClientId) => {
-        
-        
+
+
         const getUpdateClientCall = clients.find(client => client._id === clickClientId);
-         
+        console.log(getUpdateClientCall);
+
         const increaseCalls = parseInt(getUpdateClientCall.noOfCalls) + 1;
         const callThisMonth = getUpdateClientCall.callThisMonth === 0 ? getUpdateClientCall.callThisMonth + 1 : getUpdateClientCall.callThisMonth;
-        const newUpdatedObj = { noOfCalls: increaseCalls,callThisMonth}
-       
-       if(window.confirm('Are you sure want to increase')){
-        
+        const newUpdatedObj = { noOfCalls: increaseCalls, callThisMonth }
 
-        //post client id to server
-        const url = `http://localhost:3001/api/client/${clickClientId}`
-        fetch(url, {
-            method: 'PUT',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(newUpdatedObj)
+        if (window.confirm('Are you sure want to increase')) {
 
-        })
-            .then(res => res.json())
-            .then(data => {
 
-                setCallThisMonth(data);
-                //console.log(data)
+            //post client id to server
+            const url = `http://localhost:3001/api/client/${clickClientId}`;
+            console.log(url)
+            fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(newUpdatedObj)
+
             })
-            .catch(error =>{
-                //console.log(error);
-            })
+                .then(res => res.json())
+                .then(data => {
 
-             // update data to summary API total call and total store count
-            
+                    setCallThisMonth(data);
+                    console.log(data)
+                })
+                .catch(error => {
+                    //console.log(error);
+                })
+
+            // update data to summary API total call and total store count
+
             // let totalStore = getMonthSummaryData.error ? parseInt(0) : getMonthSummaryData?.totalStore; 
 
             //  totalStore = getUpdateClientCall.callThisMonth === 0 ?  totalStore + 1 : totalStore;
-        
+
 
             // const totalCallCurrMonth = getMonthSummaryData.error ?  1 : getMonthSummaryData?.totalCallCurrMonth + 1; 
 
             const incTotalStore = getUpdateClientCall.callThisMonth === 0 ? true : false;
-            const incTotalCallCurrMonth =  true ;
-            
-             const updateSummaryData = {incTotalStore,incTotalCallCurrMonth}
-               //update data to summary API
+            const incTotalCallCurrMonth = true;
+
+            const updateSummaryData = { incTotalStore, incTotalCallCurrMonth }
+            //update data to summary API
             const urlSum = `http://localhost:3001/api/summary/${currMonth}-${currYear}/${getUpdateClientCall.app}`;
             console.log(urlSum)
-         fetch(urlSum,{
-             method:'PUT',
-             headers:{
-                 'content-type': 'application/json'
-             },
-             body: JSON.stringify(updateSummaryData)
-         })
-         .then(res => res.json())
-         .then(data => {
-            if(data.result.acknowledged){
-                toast.success('Updated Data and Call Successfully')
-            }
-            else{
-                toast.error('Data Not Updated Successfully')
-            }
-         });
+            fetch(urlSum, {
+                method: 'PUT',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(updateSummaryData)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.result.acknowledged) {
+                        toast.success('Updated Data and Call Successfully')
+                    }
+                    else {
+                        toast.error('Data Not Updated Successfully')
+                    }
+                });
 
-       }else{
-        toast.warn('You have selected No',{
-          
-        })
-       }
+        } else {
+            toast.warn('You have selected No', {
+
+            })
+        }
     }
 
-const deleteClientTopage = (id) =>{
-    if(window.confirm('Are you sure? want to Delete!!!')){
-    fetch(`http://localhost:3001/api/client/${id}`,{
-        method: 'DELETE',
-    })
-    .then(res => res.json())
-    .then(data => {
-        if(data.length > 0){
-        setDeleteClient(data)
-        toast.success('Deleted Successfully')
-    }
-    })
-    .catch(error =>{
-        console.log(error);
-    })
-}else{
-    toast.warn('You have selected NO !!!!')
-}
+    const deleteClientTopage = (id) => {
+        if (window.confirm('Are you sure? want to Delete!!!')) {
+            fetch(`http://localhost:3001/api/client/${id}`, {
+                method: 'DELETE',
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        setDeleteClient(data)
+                        toast.success('Deleted Successfully')
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        } else {
+            toast.warn('You have selected NO !!!!')
+        }
 
-}
+    }
 
     //get search text state
 
@@ -196,40 +198,48 @@ const deleteClientTopage = (id) =>{
 
     }
 
-    const getAppSelectdata =(e)=>{
-        setaAdStoreTitle({...addStoreTitle,app:e.target.value});
+    const getAppSelectdata = (e) => {
+        setaAdStoreTitle({ ...addStoreTitle, app: e.target.value });
     }
     const serachNotFoundToAddClient = () => {
-        setaAdStoreTitle({...addStoreTitle,storeTitle:searchVal});
-        
+        setaAdStoreTitle({ ...addStoreTitle, storeTitle: searchVal });
+
         'app' in addStoreTitle && navigate('/addclient');
-        
+
     }
 
-  
+  const pageJumpSubmit = (e) =>{
+     e.preventDefault();
+     
+     const inpVal = e.target.pageNum.value;
 
-  
+     setPage( inpVal -1 >= 0 && inpVal - 1);
+     
+    
+  }
+
+
 
     return (
         <div className='content-container'>
-             {loading ? <Loader></Loader> : ''}
+            {loading ? <Loader></Loader> : ''}
             <div>
-               <div className='summaryShowDashboardMainDiv'>
+                <div className='summaryShowDashboardMainDiv'>
                     <h2>{monthName}</h2>
                     <div className='summaryShowDashboard'>
-                    <p><span>Total Unique calls</span> {getMonthSummaryData?.uniqueCalls !== undefined ?getMonthSummaryData?.uniqueCalls : 0 }</p>
-                        <p><span>Total Ask reviews</span>{getMonthSummaryData.totalAskRev !== undefined?getMonthSummaryData?.totalAskRev:0}</p>
-                        <p><span>Total Given review</span>{getMonthSummaryData.totalReviewGive !==undefined?getMonthSummaryData?.totalReviewGive:0}</p>
-                        <p><span>Total Store call this Month</span> {getMonthSummaryData.totalStore !== undefined ? getMonthSummaryData?.totalStore:0}</p>
-                        <p><span>Total Call This Month</span>{getMonthSummaryData.totalCallCurrMonth !== undefined ?getMonthSummaryData?.totalCallCurrMonth:0}</p>
+                        <p><span>Total Unique calls</span> {getMonthSummaryData?.uniqueCalls !== undefined ? getMonthSummaryData?.uniqueCalls : 0}</p>
+                        <p><span>Total Ask reviews</span>{getMonthSummaryData.totalAskRev !== undefined ? getMonthSummaryData?.totalAskRev : 0}</p>
+                        <p><span>Total Given review</span>{getMonthSummaryData.totalReviewGive !== undefined ? getMonthSummaryData?.totalReviewGive : 0}</p>
+                        <p><span>Total Store call this Month</span> {getMonthSummaryData.totalStore !== undefined ? getMonthSummaryData?.totalStore : 0}</p>
+                        <p><span>Total Call This Month</span>{getMonthSummaryData.totalCallCurrMonth !== undefined ? getMonthSummaryData?.totalCallCurrMonth : 0}</p>
                     </div>
-                       
-                    </div>
+
+                </div>
             </div>
-       
 
 
-           <div className="search-container">
+
+            <div className="search-container">
                 <input defaultValue={searchVal} onChange={handleSearchText} type="text" name="searchtext" className="textbox" placeholder="Search store URL" />
 
                 <div className="searchResutDiv">
@@ -245,9 +255,9 @@ const deleteClientTopage = (id) =>{
                             <input type="radio" defaultChecked={addStoreTitle.app === 'dr' ? true : false} name="selectApp" id="" value='dr' />
                             <label>DR</label>
                         </form>
-                            {
-                                'app' in addStoreTitle || <h3 className='selctAppWarning'>Please Select App</h3> 
-                            }
+                        {
+                            'app' in addStoreTitle || <h3 className='selctAppWarning'>Please Select App</h3>
+                        }
                         <button className='btn' onClick={serachNotFoundToAddClient}>Add as a New</button>
 
 
@@ -279,44 +289,61 @@ const deleteClientTopage = (id) =>{
                     </thead>
                     <tbody>
                         {
-                            
-                            
+
+
                             clients.map(client => <Tabledata
                                 clients={clients}
                                 key={client._id}
                                 client={client}
                                 handleCallThisMonth={handleCallThisMonth}
-                                deleteClientTopage = {deleteClientTopage}
-                                
-                             
+                                deleteClientTopage={deleteClientTopage}
+
+
                             ></Tabledata>)
                         }
                     </tbody>
                 </table>
             </div>
             <div className='pagination'>
-               <div className='pageNum'>
-                {
-                    [...Array(pages).keys()].map(pageNum => <button
-                    key={pageNum}
-                    onClick={()=>{setPage(pageNum);setLoading(true)} }
-                    className = {page === pageNum ? 'selected' : ''}
-                    >
-                        {pageNum}
-                    </button>)
-                }
-                </div>
-                <div className='pageSize'>
-                    <select defaultValue={'10'} onChange={event => setSize(event.target.value)} name="size" >
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="30">30</option>
-                    </select>
+
+
+              <form className='jumPage' onSubmit={pageJumpSubmit}>
+                <p>Go to Page:</p>
+                <input type="number" name="pageNum" min="1" max={pages} defaultValue={1} />
+                <input type="submit" value="Jump Page" />
+              </form>
+
+                    <div className='pageNum'>
+                        {
+                            // [...Array(pages).keys()].map(pageNum => <button
+                            // key={pageNum}
+                            // onClick={()=>{setPage(pageNum);setLoading(true)} }
+                            // className = {page === pageNum ? 'selected' : ''}
+                            // >
+                            //     {pageNum}
+                            // </button>)
+
+
+
+
+
+                        }
+                        <button onClick={() => { setPage(page < 0 && page - 1) }}>Prev</button>
+                        <p>{page + 1} of {pages}</p>
+                        <button onClick={() => { setPage(page < pages && page + 1) }}>Next</button>
+                    </div>
+                    <div className='pageSize'>
+                        <p>Show per page:</p>
+                        <select defaultValue={'10'} onChange={event => setSize(event.target.value)} name="size" >
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+            );
 };
 
-export default Content;
+            export default Content;
