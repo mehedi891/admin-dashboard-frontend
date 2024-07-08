@@ -5,7 +5,7 @@ import { DefaultContext } from '../../../context/DefaultContext/Context';
 
 
 const Updateclient = () => {
-    const { store } = useParams();
+    const { id } = useParams();
     const { addStoreTitle } = useContext(DefaultContext);
     const { currMonth, currYear } = addStoreTitle;
     const [updateClientData, setUpdateClientData] = useState({});
@@ -15,15 +15,15 @@ const Updateclient = () => {
 
     useEffect(() => {
 
-        fetch(`http://localhost:3001/api/client/${store}`)
+        fetch(`http://localhost:3001/api/client/${id}`)
             .then(res => res.json())
             .then(data => {
                 setUpdateClientData(data)
-                console.log(data)
+                //console.log(data)
             })
             .catch(console.error())
 
-    }, [store]);
+    }, [id]);
 
     const navigate = useNavigate();
 
@@ -44,21 +44,22 @@ const Updateclient = () => {
         const noOfCalls = e.target.noOfCalls.value;
         const app = e.target.selectApp.value;
         const clientType = e.target.clientType.value;
+        const reviewAskCount = e.target.reviewAskAgain.checked & reviewAsk === "yes" ? updateClientData.reviewAskCount*1 + 1 : updateClientData.reviewAskCount;
 
-        const updatedClient = { storeUrl, bType, reasonFromGivRev, reasonFromAskRev, reviewGiven, reviewAsk, comment, noOfCalls, app, clientType }
+        const updatedClient = { storeUrl, bType, reasonFromGivRev, reasonFromAskRev, reviewGiven, reviewAsk, comment, noOfCalls, app, clientType,reviewAskCount }
 
-
+       //console.log(updateClientData)
 
         // variable with condition for summary data
         const increaseCall = e.target.increaseCall.checked;
         const incTotalStore = updateClientData.callThisMonth === 0 ? true : false;
         const incTotalCallCurrMonth = true;
-        const incTotalAskRev = reviewAsk === "yes" & reviewAsk !== updateClientData.reviewAsk ? true : false;
+        const incTotalAskRev = reviewAsk === "yes" & e.target.reviewAskAgain.checked ? true : false;
 
         const incTotalReviewGive = reviewGiven === "yes" & reviewGiven !== updateClientData.reviewGiven ? true : false;
 
         const summaryObj = increaseCall ? { incTotalAskRev, incTotalReviewGive, incTotalStore, incTotalCallCurrMonth } : { incTotalAskRev, incTotalReviewGive };
-        //console.log(summaryObj)
+        //console.log(summaryObj,updatedClient)
         // post data to api 
         if (
             storeUrl !== updateClientData.storeUrl ||
@@ -69,7 +70,8 @@ const Updateclient = () => {
             app !== updateClientData.app ||
             reviewAsk !== updateClientData.reviewAsk ||
             reviewGiven !== updateClientData.reviewGiven ||
-            clientType !== updateClientData.clientType
+            clientType !== updateClientData.clientType ||
+            e.target.reviewAskAgain.checked 
         ) {
 
 
@@ -82,11 +84,12 @@ const Updateclient = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data)
+                    //console.log(data)
                     if (data.updatedClient.acknowledged) {
                         toast.success('Updated Client Data  Successfully');
                         // send updated data to API to upadte current data
-                        if (reviewAsk !== updateClientData.reviewAsk || reviewGiven !== updateClientData.reviewGiven) {
+                        if (updateClientData.reviewAskCount !== reviewAskCount || reviewGiven !== updateClientData.reviewGiven || increaseCall) {
+                            //console.log(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`)
                             fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`, {
                                 method: 'PUT',
                                 headers: {
@@ -108,7 +111,7 @@ const Updateclient = () => {
                                 .catch(error => {
                                     toast.error(error.message)
                                 })
-                            console.log('if');
+                            //console.log('if');
                         }
                         else {
                             toast.warn('Nothing changes in Summary Data')
@@ -127,7 +130,7 @@ const Updateclient = () => {
             toast.warn('Nothing changes in Client Data')
         }
 
-        console.log(incTotalAskRev, incTotalReviewGive)
+        //console.log(incTotalAskRev, incTotalReviewGive)
 
 
     }
@@ -200,6 +203,11 @@ const Updateclient = () => {
                                 </div>
                             </div>
                         </div>
+
+                        <div className="askAgainReview">
+                            <label>Review Ask Again</label>
+                            <input type="checkbox" name="reviewAskAgain" id="reviewAskAgain"/>
+                            </div>
                         <div className="selectApp">
                             <label>Select App</label>
                             <select defaultValue={updateClientData.app} name="selectApp">

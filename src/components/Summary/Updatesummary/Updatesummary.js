@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import UpdatesummaryData from './UpdatesummaryData';
 
+
 function Updatesummary() {
 
         // const {app,totalAskRev,totalReviewGive,totalCallCurrMonth,totalStore,uniqueCalls} = getSUmmaryData.summary;
         
         const [getSUmmaryData, setGetSummaryData] = useState({});
-        const [chooseApp,setChooseApp] = useState('total');
+        const [chooseApp,setChooseApp] = useState('ib');
         const currMonth = new Date().getMonth() + 1;
         const currYear = new Date().getFullYear();
         let fullDate = currYear+'-'+currMonth;
@@ -25,7 +26,7 @@ function Updatesummary() {
                     .then(res => res.json())
                     .then(data => {
                         setGetSummaryData(data);
-                        console.log('data:',data);
+                        //console.log('data:',data);
                       
                     })
                     .catch(error =>{
@@ -38,7 +39,35 @@ function Updatesummary() {
         // const {app,totalAskRev,totalCallCurrMonth,totalReviewGive,totalStore,uniqueCalls} = getSUmmaryData.summary !== undefined  &&  getSUmmaryData.summary ;
        
        
+     const handleUpdateSummary = (e)=>{
+        e.preventDefault();
+        const totalAskRev = e.target.totalAskRev.value;
+        const totalReviewGive = e.target.totalReviewGive.value;
+        const totalCallCurrMonth = e.target.totalCallCurrMonth.value;
+        const totalStore = e.target.totalStore.value;
+        const uniqueCalls = e.target.uniqueCalls.value;
+        const updatedSummaryData = {totalAskRev,totalReviewGive,totalCallCurrMonth,totalStore,uniqueCalls,updateAll:true}
+       
+        //console.log(updatedSummaryData);
 
+        fetch(`http://localhost:3001/api/summary/${otherMonth}-${otherYear}/${chooseApp}`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(updatedSummaryData)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if(data.result.acknowledged){
+                    toast.success(data.message)
+                }
+            })
+            .catch(error=>{
+                toast.error('Something went wrong')
+            })
+        
+     }
        
 
 
@@ -57,8 +86,8 @@ function Updatesummary() {
                     </div>
                     <div className='chooseApp'>
                         <label>Select APP</label>
-                       <select name="chooseApp" defaultValue='total' onChange={(e)=>setChooseApp(e.target.value)}>
-                            <option value="total">Total</option>
+                       <select name="chooseApp" defaultValue='ib' onChange={(e)=>setChooseApp(e.target.value)}>
+                          
                             <option value="ib">Inkybay</option>
                             <option value="mv">Multivariants</option>
                             <option value="dr">Discount Ray</option>
@@ -66,7 +95,7 @@ function Updatesummary() {
                        
                     </div>
                     </div>
-                   
+                  
                 </form>
                 
               
@@ -79,6 +108,7 @@ function Updatesummary() {
             <UpdatesummaryData
             key={getSUmmaryData.summary._id}
             getSUmmaryData={getSUmmaryData}
+            handleUpdateSummary ={handleUpdateSummary}
 
             ></UpdatesummaryData>
         }

@@ -18,6 +18,7 @@ import Summary from './components/Summary/Summary';
 import AdminRoute from './PrivateRoute/AdminRoute';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
 import Updatesummary from './components/Summary/Updatesummary/Updatesummary';
+import Updatereview from './components/Dashboard/Updatereview/Updatereview';
 
 function App() {
 
@@ -44,8 +45,14 @@ function App() {
            <Addclient></Addclient>
           </PrivateRoute>
         }></Route>
+
+<Route path='/update-review/:id' element={
+          <PrivateRoute>
+           <Updatereview></Updatereview>
+          </PrivateRoute>
+        }></Route>
         
-        <Route path='/upadteclient/:store' element={<Updateclient></Updateclient>}></Route>
+        <Route path='/upadteclient/:id' element={<Updateclient></Updateclient>}></Route>
        
         <Route path='/summary' element={
           <PrivateRoute>

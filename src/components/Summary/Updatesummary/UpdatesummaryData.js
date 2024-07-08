@@ -1,10 +1,10 @@
 import React from 'react'
 
-function UpdatesummaryData({getSUmmaryData}) {
+function UpdatesummaryData({getSUmmaryData,handleUpdateSummary}) {
   return (
     <div>
       <div className='updateSummaryDiv'>
-        <form>
+        <form onSubmit={handleUpdateSummary}>
             <h2>Updating The value for {getSUmmaryData.monthName} {getSUmmaryData?.summary?.app}</h2>
             <div>
                 <p>Total Ask Review</p>
@@ -28,7 +28,7 @@ function UpdatesummaryData({getSUmmaryData}) {
                 <p>Total UniqueCalls</p>
                <input type="number" name="uniqueCalls" defaultValue={getSUmmaryData.summary.uniqueCalls} />
             </div>
-      
+            <input type="submit" className='btn' value="Upadate Summary Data" />
         </form>
 
 

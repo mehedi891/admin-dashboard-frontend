@@ -8,9 +8,10 @@ import Loader from '../../Loader/Loader';
 
 import './Content.css';
 import Tabledata from './Table/Tabledata/Tabledata';
-;
+
 
 const Content = () => {
+
     //for pagination
     const [clientCount] = useGetClientCount();
     const [page, setPage] = useState(0);
@@ -217,11 +218,17 @@ const Content = () => {
      
     
   }
-
+  
+  const handleUpdateReview =(id)=>{
+   
+    navigate(`/update-review/${id}`)
+   
+  }
 
 
     return (
         <div className='content-container'>
+           
             {loading ? <Loader></Loader> : ''}
             <div>
                 <div className='summaryShowDashboardMainDiv'>
@@ -297,7 +304,7 @@ const Content = () => {
                                 client={client}
                                 handleCallThisMonth={handleCallThisMonth}
                                 deleteClientTopage={deleteClientTopage}
-
+                                handleUpdateReview={handleUpdateReview}
 
                             ></Tabledata>)
                         }

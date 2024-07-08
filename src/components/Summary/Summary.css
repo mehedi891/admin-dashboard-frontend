@@ -115,3 +115,12 @@
   display: flex;
   gap: 10px;
 }
+
+.updateSummaryDiv form{
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 17px;
+}

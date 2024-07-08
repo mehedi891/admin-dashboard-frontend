@@ -246,6 +246,12 @@
   align-items: center;
   gap: 7px;
 }
+.table tbody tr td.clrevAsk{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .table tbody tr.tryBg td.clrevAsk {
   background-color: #ffe599;
 }

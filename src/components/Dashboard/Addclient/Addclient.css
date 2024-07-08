@@ -81,34 +81,43 @@
   text-align: center;
 }
 .selectApp {
-  margin-top: 80px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+.askAgainReview {
+  margin-top: 80px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.askAgainReview input {
+  width: 20px;
+  cursor: pointer;
+}
+.askAgainReview label {
+  font-size: 17px;
 }
 .selectApp label {
   font-size: 18px;
   font-weight: 700;
 }
-.selectApp select {
+.selectApp select,
+.clientType select {
   width: 190px;
   font-size: 18px;
   font-weight: 700;
   text-align: center;
   padding: 7px 15px;
-}
-.noOfcalls {
-  display: none;
 }
 .clientType {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
-.clientType select, .selectApp select {
-  font-size: 18px;
-  font-weight: 700;
-  padding: 7px 15px;
-  text-align: center;
-  width: 190px;
+.noOfcalls {
+  display: none;
+}
+.addClient .selectApp {
+  margin-top: 80px;
 }

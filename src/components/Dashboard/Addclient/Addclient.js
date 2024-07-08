@@ -40,7 +40,8 @@ const Addclient = () => {
       comment,
       noOfCalls,
       callThisMonth,
-      clientType
+      clientType,
+      reviewAskCount: reviewAsk === "yes" ? 1 : 0
     };
  
 
@@ -142,7 +143,7 @@ const Addclient = () => {
   console.log(addStoreTitle);
 
   return (
-    <div className="form-container">
+    <div className="form-container addClient">
       <h3 className="addClienttitle title text-center">
        
         {addStoreTitle.storeTitle

@@ -8,12 +8,12 @@ import logoIb from '../../../../../imageIcon/logoIb.png';
 import logoMv from '../../../../../imageIcon/logoMv.png';
 import update_icon from '../../../../../imageIcon/update_icon.svg';
 
-const Tabledata = ({client,handleCallThisMonth,deleteClientTopage,clients}) => {
+const Tabledata = ({client,handleCallThisMonth,deleteClientTopage,clients,handleUpdateReview}) => {
     const navigate = useNavigate();
     const {dataTemp} = useContext(DefaultContext);
     const {_id,storeUrl,bType,noOfCalls,reviewAsk,reviewGiven,reasonFromAskRev,reasonFromGivRev,comment,callThisMonth,app,clientType,reviewAskCount} = client;
-    const updateClientTopage = (storeurl) =>{
-        navigate(`/upadteclient/${storeurl}`);
+    const updateClientTopage = (id) =>{
+        navigate(`/upadteclient/${id}`);
     }
 
     return (
@@ -27,16 +27,18 @@ const Tabledata = ({client,handleCallThisMonth,deleteClientTopage,clients}) => {
         <td className='clstoreUrl'>{storeUrl}</td>
         <td className='clbType'>{bType}</td>
         <td className='clNocalls'>{noOfCalls}</td>
-        <td className='clrevAsk'>{reviewAsk} <span>Asked: {reviewAskCount !== undefined ? reviewAskCount  : '0'}</span></td>
+        <td className='clrevAsk'>{reviewAsk} <span>Asked: {reviewAskCount !== undefined ? reviewAskCount  : '0'}</span><img onClick={()=>handleUpdateReview(_id)} className='icon' src={update_icon} alt='Update'/></td>
         <td className='clrevGiv'>{reviewGiven}</td>
         <td className='clCalledMonth'>
             <div title='Count' onClick={()=>handleCallThisMonth(_id)}>
             <img className='icon' src ={count_icon} alt='Count'/>
             </div></td>
-        <td className='reason'>{reasonFromAskRev === '' ? reasonFromGivRev: reasonFromAskRev}</td>
+        <td className='reason'>{
+        reasonFromAskRev === '' ? reasonFromGivRev: reasonFromAskRev
+        }</td>
         <td className='clComment'>{comment}</td>
         <td className='clBtnUpdateDel'>
-            <div title='Update'  onClick={()=>updateClientTopage(storeUrl)}>
+            <div title='Update'  onClick={()=>updateClientTopage(_id)}>
                 <img className='icon' src={update_icon} alt='Update'/>
             </div>{
             dataTemp.login.role === 'admin' &&
