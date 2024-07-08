@@ -26,6 +26,7 @@ const Addclient = () => {
     const comment = e.target.comment.value;
     const noOfCalls = e.target.noOfCalls.value;
     const app = e.target.selectApp.value;
+    const clientType = e.target.clientType.value;
     const callThisMonth = parseInt(1);
 
     const newClient = {
@@ -39,6 +40,7 @@ const Addclient = () => {
       comment,
       noOfCalls,
       callThisMonth,
+      clientType
     };
  
 
@@ -292,6 +294,15 @@ const Addclient = () => {
               <option value="mv">Multivariants</option>
               <option value="dr">Discount Ray</option>
             </select>
+          </div>
+          <div className="clientType">
+                            <label>Select Client Type(For ask Review)</label>
+                            <select defaultValue={"safe"} name="clientType">
+                                <option value="safe">Safe</option>
+                                <option value="try">Give it A Try</option>
+                                <option value="risky">Risky</option>
+                                <option value="danger">Danger</option>
+                            </select>
           </div>
         </div>
 

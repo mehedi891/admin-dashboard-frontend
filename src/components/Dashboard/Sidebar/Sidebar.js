@@ -23,6 +23,10 @@ const Sidebar = () => {
                 dataTemp.login.role === 'admin' &&
                 <Link to='/adduser'>Add User</Link>
                 }
+                 {
+                dataTemp.login.role === 'admin' &&
+                <Link to='/update-summary'>Update Summary</Link>
+                }
                 {
                 dataTemp.login.role === 'admin' &&
                 <Link to='/manageuser'>Manage User</Link>

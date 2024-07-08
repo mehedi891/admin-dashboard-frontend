@@ -17,6 +17,7 @@ import UpdateUser from './components/Dashboard/UpdateUser/UpdateUser';
 import Summary from './components/Summary/Summary';
 import AdminRoute from './PrivateRoute/AdminRoute';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
+import Updatesummary from './components/Summary/Updatesummary/Updatesummary';
 
 function App() {
 
@@ -54,6 +55,12 @@ function App() {
         <Route path='/adduser' element={
           <AdminRoute>
           <AddUser></AddUser>
+         </AdminRoute>
+        }></Route>
+
+<Route path='/update-summary' element={
+          <AdminRoute>
+          <Updatesummary></Updatesummary>
          </AdminRoute>
         }></Route>
 

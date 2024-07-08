@@ -100,3 +100,15 @@
 .noOfcalls {
   display: none;
 }
+.clientType {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.clientType select, .selectApp select {
+  font-size: 18px;
+  font-weight: 700;
+  padding: 7px 15px;
+  text-align: center;
+  width: 190px;
+}

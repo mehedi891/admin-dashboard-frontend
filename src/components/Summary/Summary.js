@@ -5,6 +5,7 @@ import { DefaultContext } from '../../context/DefaultContext/Context';
 
 import './Summary.css';
 
+
 const Summary = () => { 
     const {dataTemp} = useContext(DefaultContext);
     const [getSUmmaryData, setGetSummaryData] = useState({});
@@ -12,7 +13,8 @@ const Summary = () => {
     const currYear = new Date().getFullYear();
     let fullDate = currYear+'-'+currMonth;
     const [getDate,setGetDate] = useState(fullDate);
-    const [chooseApp,setChooseApp] = useState('total')
+    const [chooseApp,setChooseApp] = useState('total');
+
   const navigate = useNavigate();
     // const otherMonth = getDate?.split('-')[1]?.charAt( 0 ) === '0' ?getDate?.split('-')[1]?.slice( 1 ) :getDate?.split('-')[1] ;
     // const otherYear = getDate?.split('-')[0];
@@ -26,13 +28,13 @@ const Summary = () => {
 
     useEffect(() => {
 const url = `http://localhost:3001/api/summary/${otherMonth}-${otherYear}/${chooseApp}`;
-console.log(url)
-console.log(url)
+
+//console.log(url)
         fetch(url)
             .then(res => res.json())
             .then(data => {
                 setGetSummaryData(data);
-                console.log(data);
+                //console.log(data);
               
             })
             .catch(error =>{
@@ -41,7 +43,7 @@ console.log(url)
 
     }, [getDate,otherMonth,otherYear,chooseApp]);
    
-    console.log(otherMonth,otherYear,getDate,currMonth.toString().length)
+    //console.log(otherMonth,otherYear,getDate,currMonth.toString().length)
 
 
     //rest button handler
@@ -79,6 +81,9 @@ console.log(url)
 
 
     }
+
+
+  
 
     //conditional destructure from summary API data
 const {totalAskRev,totalCallCurrMonth,totalReviewGive,totalStore,uniqueCalls} = getSUmmaryData.summary !== undefined  &&  getSUmmaryData?.summary ;
@@ -154,7 +159,20 @@ const {totalAskRev,totalCallCurrMonth,totalReviewGive,totalStore,uniqueCalls} = 
 
 
             </div>
+
+
+
+
+      
+          
+            
+            
+
         </div>
+
+
+       
+
     );
 };
 
