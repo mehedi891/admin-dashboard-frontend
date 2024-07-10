@@ -283,13 +283,13 @@ const Content = () => {
                             <th>No.</th>
                             <th>App</th>
                             <th>Store URL</th>
-                            <th>B.Type</th>
+                            <th>Store Developer</th>
                             <th>No. of Calls</th>
                             <th>Review Asked</th>
                             <th>Review Given</th>
                             <th>Called This Month</th>
                             <th>Reason</th>
-                            <th>Comment</th>
+                            <th>Email</th>
                             <th>Upadate/Delete</th>
                             {/* <th>Call this month</th> */}
                         </tr>

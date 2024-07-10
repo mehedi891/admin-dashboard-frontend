@@ -31,7 +31,7 @@ const navigate = useNavigate();
         .then(res => res.json())
         .then(data => {
             //navigate('/')
-            console.log(data);
+            //console.log(data);
            if(data.token){
             setDataTemp({...dataTemp,login:jwt_decode(data.token)});
             toast.success('Login Success')
@@ -59,10 +59,11 @@ const navigate = useNavigate();
         })
         .then(res => res.json())
         .then(data => {
-            console.log('dataUser',data)
+            //console.log('dataUser',data)
+            toast.success('Login Success Full');
         })
         .catch(error =>{
-            console.log(error)
+            //console.log(error)
         })
     }
    

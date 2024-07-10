@@ -6,7 +6,11 @@
   border-radius: 10px;
   height: min-content;
 }
-
+.form-container form{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 .reviewAskYesDiv label,
 .reviewAskNoDiv label {
   font-size: 20px;
@@ -20,6 +24,9 @@
 .inputConditionGroup {
   margin-top: 15px;
   position: relative;
+  display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .reviewAskDiv {
@@ -119,5 +126,17 @@
   display: none;
 }
 .addClient .selectApp {
+  margin-top: 10px;
+}
+.askAgainReview.storeDev{
+  margin-top: 0;
+}
+
+.addClient .askAgainReview.storeDev{
   margin-top: 80px;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  cursor: pointer;
 }

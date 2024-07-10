@@ -8,7 +8,7 @@ import "./Addclient.css";
 
 const Addclient = () => {
   const navigate = useNavigate();
-  const {addStoreTitle,setaAdStoreTitle} = useContext(DefaultContext);
+  const {addStoreTitle,setaAdStoreTitle,dataTemp} = useContext(DefaultContext);
   const {currMonth,currYear} = addStoreTitle;
  
   //client data get and create oibject
@@ -28,6 +28,8 @@ const Addclient = () => {
     const app = e.target.selectApp.value;
     const clientType = e.target.clientType.value;
     const callThisMonth = parseInt(1);
+    const addedBy = dataTemp.login.name;
+    const storeDev = e.target.storeDev.checked ? 'yes' : 'no'
 
     const newClient = {
       storeUrl,
@@ -41,6 +43,8 @@ const Addclient = () => {
       noOfCalls,
       callThisMonth,
       clientType,
+      addedBy,
+      storeDev,
       reviewAskCount: reviewAsk === "yes" ? 1 : 0
     };
  
@@ -173,9 +177,9 @@ const Addclient = () => {
         </div>
 
         <div className="comment flex-column">
-          <label htmlFor="comment">Comment</label>
+          <label htmlFor="comment">Email</label>
           <input
-            type="text"
+            type="email"
             name="comment"
             placeholder="Add additional info about client/ Optional"
           />
@@ -288,6 +292,10 @@ const Addclient = () => {
               </div>
             </div>
           </div>
+          <div className="askAgainReview storeDev">
+                            <label>Developer Or Not</label>
+                            <input type="checkbox" name="storeDev" id="storeDev"/>
+                            </div>
           <div className="selectApp">
             <label>Select App</label>
             <select defaultValue={addStoreTitle.app} name="selectApp">

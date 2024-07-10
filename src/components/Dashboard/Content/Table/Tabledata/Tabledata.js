@@ -11,7 +11,7 @@ import update_icon from '../../../../../imageIcon/update_icon.svg';
 const Tabledata = ({client,handleCallThisMonth,deleteClientTopage,clients,handleUpdateReview}) => {
     const navigate = useNavigate();
     const {dataTemp} = useContext(DefaultContext);
-    const {_id,storeUrl,bType,noOfCalls,reviewAsk,reviewGiven,reasonFromAskRev,reasonFromGivRev,comment,callThisMonth,app,clientType,reviewAskCount} = client;
+    const {_id,storeUrl,bType,noOfCalls,reviewAsk,reviewGiven,reasonFromAskRev,reasonFromGivRev,comment,callThisMonth,app,clientType,reviewAskCount,lastUpdateBy,addedBy,storeDev} = client;
     const updateClientTopage = (id) =>{
         navigate(`/upadteclient/${id}`);
     }
@@ -25,7 +25,7 @@ const Tabledata = ({client,handleCallThisMonth,deleteClientTopage,clients,handle
             {app === 'dr' &&  <img src={logoDr} alt='dr' /> } 
         </td>
         <td className='clstoreUrl'>{storeUrl}</td>
-        <td className='clbType'>{bType}</td>
+        <td className='clbType'><input type="checkbox" style={{pointerEvents:'none'}} defaultChecked={storeDev === 'yes' ? true: false} name="StoreDev"/></td>
         <td className='clNocalls'>{noOfCalls}</td>
         <td className='clrevAsk'>{reviewAsk} <span>Asked: {reviewAskCount !== undefined ? reviewAskCount  : '0'}</span><img onClick={()=>handleUpdateReview(_id)} className='icon' src={update_icon} alt='Update'/></td>
         <td className='clrevGiv'>{reviewGiven}</td>
@@ -35,8 +35,8 @@ const Tabledata = ({client,handleCallThisMonth,deleteClientTopage,clients,handle
             </div></td>
         <td className='reason'>{
         reasonFromAskRev === '' ? reasonFromGivRev: reasonFromAskRev
-        }</td>
-        <td className='clComment'>{comment}</td>
+        } ,lastUpdateBy : {lastUpdateBy} </td>
+        <td className='clComment'>{comment} AddedBy:{addedBy}</td>
         <td className='clBtnUpdateDel'>
             <div title='Update'  onClick={()=>updateClientTopage(_id)}>
                 <img className='icon' src={update_icon} alt='Update'/>

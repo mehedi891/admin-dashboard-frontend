@@ -6,7 +6,7 @@ import { DefaultContext } from '../../../context/DefaultContext/Context';
 
 const Updateclient = () => {
     const { id } = useParams();
-    const { addStoreTitle } = useContext(DefaultContext);
+    const { addStoreTitle,dataTemp} = useContext(DefaultContext);
     const { currMonth, currYear } = addStoreTitle;
     const [updateClientData, setUpdateClientData] = useState({});
     //call custom hooks for summary data by month
@@ -44,9 +44,11 @@ const Updateclient = () => {
         const noOfCalls = e.target.noOfCalls.value;
         const app = e.target.selectApp.value;
         const clientType = e.target.clientType.value;
+        const lastUpdateBy = dataTemp.login.name;
+        const storeDev = e.target.storeDev.checked ? 'yes' : 'no'
         const reviewAskCount = e.target.reviewAskAgain.checked & reviewAsk === "yes" ? updateClientData.reviewAskCount*1 + 1 : updateClientData.reviewAskCount;
 
-        const updatedClient = { storeUrl, bType, reasonFromGivRev, reasonFromAskRev, reviewGiven, reviewAsk, comment, noOfCalls, app, clientType,reviewAskCount }
+        const updatedClient = { storeUrl, bType, reasonFromGivRev, reasonFromAskRev, reviewGiven, reviewAsk, comment, noOfCalls, app, clientType,reviewAskCount,lastUpdateBy,storeDev }
 
        //console.log(updateClientData)
 
@@ -71,7 +73,8 @@ const Updateclient = () => {
             reviewAsk !== updateClientData.reviewAsk ||
             reviewGiven !== updateClientData.reviewGiven ||
             clientType !== updateClientData.clientType ||
-            e.target.reviewAskAgain.checked 
+            e.target.reviewAskAgain.checked ||
+            storeDev !== updateClientData.storeDev
         ) {
 
 
@@ -150,8 +153,8 @@ const Updateclient = () => {
                 </div>
 
                 <div className="comment flex-column">
-                    <label htmlFor="comment">Comment</label>
-                    <input type="text" name="comment" placeholder='Add additional info about client' defaultValue={updateClientData.comment} />
+                    <label htmlFor="comment">Email</label>
+                    <input type="email" name="comment" placeholder='Add client email' defaultValue={updateClientData.comment} />
                 </div>
                 <div className="noOfcalls flex-column">
                     <label htmlFor="noOfCalls">No Of calls</label>
@@ -205,9 +208,20 @@ const Updateclient = () => {
                         </div>
 
                         <div className="askAgainReview">
-                            <label>Review Ask Again</label>
+                            <label>Review Ask Again </label>
                             <input type="checkbox" name="reviewAskAgain" id="reviewAskAgain"/>
                             </div>
+
+                            <div className='increaseCall'>
+                            <label>Increase Call</label>
+                            <input type="checkbox" name="increaseCall" id="increaseCallInp" />
+                        </div>
+                        
+                            <div className="askAgainReview storeDev">
+                            <label>Developer Or Not</label>
+                            <input type="checkbox" name="storeDev" id="storeDev" defaultChecked={updateClientData.storeDev === 'yes' ? true : false}/>
+                            </div>
+
                         <div className="selectApp">
                             <label>Select App</label>
                             <select defaultValue={updateClientData.app} name="selectApp">
@@ -216,10 +230,7 @@ const Updateclient = () => {
                                 <option value="dr">Discount Ray</option>
                             </select>
                         </div>
-                        <div className='increaseCall'>
-                            <label>Increase Call</label>
-                            <input type="checkbox" name="increaseCall" id="increaseCallInp" />
-                        </div>
+                        
 
                         <div className="clientType">
                             <label>Select Client Type(For ask Review)</label>
