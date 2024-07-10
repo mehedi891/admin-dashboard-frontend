@@ -140,3 +140,18 @@ input[type="checkbox"] {
   width: 20px;
   cursor: pointer;
 }
+
+.revReason{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.revReason select{
+  min-width: 190px;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    padding: 7px 15px;
+    max-width: min-content;
+}

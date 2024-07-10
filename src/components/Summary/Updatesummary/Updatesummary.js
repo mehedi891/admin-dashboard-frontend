@@ -47,6 +47,7 @@ function Updatesummary() {
         const totalStore = e.target.totalStore.value;
         const uniqueCalls = e.target.uniqueCalls.value;
         const updatedSummaryData = {totalAskRev,totalReviewGive,totalCallCurrMonth,totalStore,uniqueCalls,updateAll:true}
+        
        
         //console.log(updatedSummaryData);
 

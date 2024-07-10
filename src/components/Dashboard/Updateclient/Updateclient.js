@@ -9,6 +9,8 @@ const Updateclient = () => {
     const { addStoreTitle,dataTemp} = useContext(DefaultContext);
     const { currMonth, currYear } = addStoreTitle;
     const [updateClientData, setUpdateClientData] = useState({});
+    const [getSummaryData, setGetSummaryData] = useState({});
+
     //call custom hooks for summary data by month
 
     //conditional destructure from summary API data
@@ -25,6 +27,29 @@ const Updateclient = () => {
 
     }, [id]);
 
+    useEffect(() => {
+        if(updateClientData.app){
+
+        
+        fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${updateClientData.app}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.summary) {
+                    setGetSummaryData(data.summary);
+                    
+                 
+                }
+                else {
+                    setGetSummaryData(data)
+                }
+            })
+            .catch(error => {
+                setGetSummaryData(error)
+            })
+        }
+    }, [currMonth, currYear,updateClientData.app]);
+
+    
     const navigate = useNavigate();
 
     //client data get and create oibject 
@@ -45,24 +70,62 @@ const Updateclient = () => {
         const app = e.target.selectApp.value;
         const clientType = e.target.clientType.value;
         const lastUpdateBy = dataTemp.login.name;
+        const revReasonNotAsking = e.target.revReasonNotAsking.value;
         const storeDev = e.target.storeDev.checked ? 'yes' : 'no'
         const reviewAskCount = e.target.reviewAskAgain.checked & reviewAsk === "yes" ? updateClientData.reviewAskCount*1 + 1 : updateClientData.reviewAskCount;
 
-        const updatedClient = { storeUrl, bType, reasonFromGivRev, reasonFromAskRev, reviewGiven, reviewAsk, comment, noOfCalls, app, clientType,reviewAskCount,lastUpdateBy,storeDev }
+        const updatedClient = { storeUrl, bType, reasonFromGivRev, reasonFromAskRev, reviewGiven, reviewAsk, comment, noOfCalls, app, clientType,reviewAskCount,lastUpdateBy,storeDev,revReasonNotAsking}
 
-       //console.log(updateClientData)
+       
 
         // variable with condition for summary data
         const increaseCall = e.target.increaseCall.checked;
         const incTotalStore = updateClientData.callThisMonth === 0 ? true : false;
         const incTotalCallCurrMonth = true;
         const incTotalAskRev = reviewAsk === "yes" & e.target.reviewAskAgain.checked ? true : false;
-
+        
         const incTotalReviewGive = reviewGiven === "yes" & reviewGiven !== updateClientData.reviewGiven ? true : false;
+
+       
+
+         const revReasonSummary = revReasonNotAsking in getSummaryData;
+         let revReasonObj = {};
+         if(revReasonSummary){
+             revReasonObj = {[revReasonNotAsking]:getSummaryData[revReasonNotAsking] + 1 };
+            //console.log(revReasonObj,'from if');
+         }else{
+             revReasonObj = {[revReasonNotAsking]:1 };
+            //console.log(revReasonObj,'from else');
+         }
+
+         //console.log(revReasonSummary,getSummaryData);
 
         const summaryObj = increaseCall ? { incTotalAskRev, incTotalReviewGive, incTotalStore, incTotalCallCurrMonth } : { incTotalAskRev, incTotalReviewGive };
         //console.log(summaryObj,updatedClient)
         // post data to api 
+
+
+
+        if(updateClientData?.revReasonNotAsking !== revReasonNotAsking){
+            fetch(`http://localhost:3001/api/summary/rev-reason/${currMonth}-${currYear}/${app}`, {
+                method: 'PUT',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(revReasonObj)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.result.acknowledged){
+                        toast.success('Updated Reason for Not asking Data');
+                        navigate('/');
+                    }
+                })
+            }else{
+                toast.warning('Nothing changes in Reason for Not asking');
+            }
+        
+
         if (
             storeUrl !== updateClientData.storeUrl ||
             bType !== updateClientData.bType ||
@@ -74,7 +137,8 @@ const Updateclient = () => {
             reviewGiven !== updateClientData.reviewGiven ||
             clientType !== updateClientData.clientType ||
             e.target.reviewAskAgain.checked ||
-            storeDev !== updateClientData.storeDev
+            storeDev !== updateClientData.storeDev ||
+            revReasonNotAsking !== updateClientData.revReasonNotAsking
         ) {
 
 
@@ -231,6 +295,20 @@ const Updateclient = () => {
                             </select>
                         </div>
                         
+                        <div className="revReason">
+                            <label>Select Reason for Not Asking Review</label>
+                            <select defaultValue={updateClientData.revReasonNotAsking ? updateClientData.revReasonNotAsking : 'notapplicable'} name="revReasonNotAsking">
+                                <option value="notapplicable">Not Applicable</option>
+                                <option value="requirementNotMatch">Requirement doens't Match</option>
+                                <option value="developer">Developer</option>
+                                <option value="taskAdded">Task Added</option>
+                                <option value="left">Left</option>
+                                <option value="newExploring">New Exploring</option>
+                                <option value="saidSureLeaveLater">Said sure. I will leave a review</option>
+                                <option value="resQtyDiscount">Want Quantity Discount</option>
+                                <option value="leftMiddleCon">Left-Middle of conversation</option>
+                            </select>
+                        </div>
 
                         <div className="clientType">
                             <label>Select Client Type(For ask Review)</label>
