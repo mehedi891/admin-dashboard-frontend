@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { DefaultContext } from "../../../context/DefaultContext/Context";
@@ -8,14 +8,159 @@ import "./Addclient.css";
 
 const Addclient = () => {
   const navigate = useNavigate();
-  const {addStoreTitle,setaAdStoreTitle,dataTemp} = useContext(DefaultContext);
-  const {currMonth,currYear} = addStoreTitle;
- 
+  const { addStoreTitle, setaAdStoreTitle, dataTemp } = useContext(DefaultContext);
+  const { currMonth, currYear } = addStoreTitle;
+  const [chooseApp, setChooseApp] = useState('ib');
+  const [getSummaryData,setgetSummaryData] = useState({});
+
   //client data get and create oibject
+  // const handleAddClient = (e) => {
+
+  //   e.preventDefault();
+
+
+  //   const storeUrl = e.target.storeUrl.value.trim();
+  //   const bType = e.target.bType.value;
+  //   const reasonFromGivRev = e.target.reasonFromGivRev.value.trim();
+  //   const reasonFromAskRev = e.target.reasonFromAskRev.value.trim();
+  //   const reviewGiven = e.target.reviewGiven.value;
+  //   const reviewAsk = e.target.reviewAsk.value;
+  //   const comment = e.target.comment.value;
+  //   const noOfCalls = e.target.noOfCalls.value;
+  //   const app = e.target.selectApp.value;
+  //   const clientType = e.target.clientType.value;
+  //   const callThisMonth = parseInt(1);
+  //   const addedBy = dataTemp.login.name;
+  //   const storeDev = e.target.storeDev.checked ? 'yes' : 'no'
+
+  //   const newClient = {
+  //     storeUrl,
+  //     app,
+  //     bType,
+  //     reasonFromGivRev,
+  //     reasonFromAskRev,
+  //     reviewGiven,
+  //     reviewAsk,
+  //     comment,
+  //     noOfCalls,
+  //     callThisMonth,
+  //     clientType,
+  //     addedBy,
+  //     storeDev,
+  //     reviewAskCount: reviewAsk === "yes" ? 1 : 0
+  //   };
+
+
+  //   // variable with condition for summary data
+  //   // const uniqueCalls = getMonthSummary.error 
+  //   // ? 1 
+  //   // : getMonthSummary?.summary?.uniqueCalls + 1;
+
+  //   // let totalAskRev = !getMonthSummary.error ? getMonthSummary?.summary?.totalAskRev : parseInt(0);
+  //   // totalAskRev = (reviewAsk === "yes") ? totalAskRev + 1 : totalAskRev;
+
+
+
+  //   // let totalReviewGive = !getMonthSummary.error ? getMonthSummary?.summary?.totalReviewGive : parseInt(0);
+  //   //   totalReviewGive = (reviewGiven === "yes") ? totalReviewGive + 1 : totalReviewGive;
+
+
+
+
+  //   // let totalStore = getMonthSummary.error
+  //   //  ? 1 
+  //   //  : getMonthSummary?.summary?.totalStore + 1;
+
+  //   //  let totalCallCurrMonth = getMonthSummary.error
+  //   //  ? 1 
+  //   //  : getMonthSummary?.summary?.totalCallCurrMonth + 1;
+
+  //   const incTotalAskRev = reviewAsk === "yes" ? true : false;
+  //   const incTotalReviewGive = reviewGiven === "yes" ? true : false;
+
+  //   const summaryObj = {
+  //     incUniqueCalls: true,
+  //     incTotalAskRev,
+  //     incTotalReviewGive,
+  //     incTotalStore : true,
+  //     incTotalCallCurrMonth:true
+
+  //   };
+
+  //   //post data to client  api
+
+  //   fetch("http://localhost:3001/api/client", {
+  //     method: "POST",
+  //     headers: {
+  //       "content-type": "application/json",
+  //     },
+  //     body: JSON.stringify(newClient),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if(data.existsClient){
+  //         toast.success(data.message);
+  //         setaAdStoreTitle({
+  //           ...addStoreTitle,
+  //           storeTitle: '',
+  //         });
+  //         upSummaryFnc();
+  //       }else{
+  //         toast.warn(data.error)
+
+
+  //       }
+
+  //     })
+  //     .catch(error =>{
+  //       toast.error('Something went wrong');
+  //     })
+
+  //   //post data to summary API
+  //   const upSummaryFnc = () =>{
+
+  //   fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`,{
+  //       method:'PUT',
+  //       headers:{
+  //           'content-type': 'application/json'
+  //       },
+  //       body: JSON.stringify(summaryObj)
+  //   })
+  //   .then(res => res.json())
+  //   .then(data => {
+  //     if(data.result.acknowledged){
+  //        navigate('/')
+  //       toast.success('Updated Summary');
+  //      setaAdStoreTitle({...addStoreTitle,reviewAsk:'yes',reviewGiven:'no'});
+  //     }
+  //     else{
+  //       console.log(data)
+  //       toast.warn('Summary updated failed');
+  //     }
+
+
+  //   })
+  //   .catch(error =>{
+  //     toast.error('Something went wrong')
+  //   })
+  // }
+
+  // };
+
+  useEffect(() => {
+    fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${chooseApp}`)
+    .then(res=>res.json())
+    .then(data=>{
+      setgetSummaryData(data.summary)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+  }, [currMonth,currYear,chooseApp]);
   const handleAddClient = (e) => {
-   
+
     e.preventDefault();
-    
+
 
     const storeUrl = e.target.storeUrl.value.trim();
     const bType = e.target.bType.value;
@@ -29,6 +174,7 @@ const Addclient = () => {
     const clientType = e.target.clientType.value;
     const callThisMonth = parseInt(1);
     const addedBy = dataTemp.login.name;
+    const revReasonNotAsking = e.target.revReasonNotAsking.value;
     const storeDev = e.target.storeDev.checked ? 'yes' : 'no'
 
     const newClient = {
@@ -45,46 +191,51 @@ const Addclient = () => {
       clientType,
       addedBy,
       storeDev,
+      revReasonNotAsking,
       reviewAskCount: reviewAsk === "yes" ? 1 : 0
     };
- 
 
-    // variable with condition for summary data
-    // const uniqueCalls = getMonthSummary.error 
-    // ? 1 
-    // : getMonthSummary?.summary?.uniqueCalls + 1;
+    console.log('reviewAsk:',reviewAsk,'reviewGiven:',reviewGiven)
+    
 
-    // let totalAskRev = !getMonthSummary.error ? getMonthSummary?.summary?.totalAskRev : parseInt(0);
-    // totalAskRev = (reviewAsk === "yes") ? totalAskRev + 1 : totalAskRev;
-   
+    const isExisttotalStoreCallThisMonth = getSummaryData.totalStoreCallThisMonth;
+    const isExisttotalStoreGivenRevThisMonth = getSummaryData.totalStoreGivenRevThisMonth;
+    const isExisttotalStoreAskRevThisMonth = getSummaryData.totalStoreAskRevThisMonth;
 
 
-    // let totalReviewGive = !getMonthSummary.error ? getMonthSummary?.summary?.totalReviewGive : parseInt(0);
-    //   totalReviewGive = (reviewGiven === "yes") ? totalReviewGive + 1 : totalReviewGive;
 
-     
+    const totalStoreCallThisMonth = isExisttotalStoreCallThisMonth.includes(storeUrl) ? isExisttotalStoreCallThisMonth : [...isExisttotalStoreCallThisMonth,storeUrl];
+
+    const totalStoreGivenRevThisMonth = reviewGiven === "yes" & !isExisttotalStoreGivenRevThisMonth.includes(storeUrl) ? [...isExisttotalStoreGivenRevThisMonth,storeUrl] : isExisttotalStoreGivenRevThisMonth;
+
+    const totalStoreAskRevThisMonth = reviewAsk === "yes" & !isExisttotalStoreAskRevThisMonth.includes(storeUrl) ? [...isExisttotalStoreAskRevThisMonth,storeUrl] : isExisttotalStoreAskRevThisMonth;
+
+    const uniqueCalls = getSummaryData.uniqueCalls + 1;
+
+    const totalAskRev =  reviewAsk === "yes" & !isExisttotalStoreAskRevThisMonth.includes(storeUrl) ? getSummaryData.totalAskRev + 1 : getSummaryData.totalAskRev;
+
+    const totalReviewGive = reviewGiven === "yes" & !isExisttotalStoreGivenRevThisMonth.includes(storeUrl) ? getSummaryData.totalReviewGive + 1 : getSummaryData.totalReviewGive;
+
+    const totalStore = getSummaryData.totalStore + 1 ;
+
+    const totalCallCurrMonth = getSummaryData.totalCallCurrMonth + 1;
+    
+
+  
+      const summaryObj = {
+        totalStoreCallThisMonth,
+        totalStoreGivenRevThisMonth,
+        totalStoreAskRevThisMonth,
+        uniqueCalls,
+        totalAskRev,
+        totalReviewGive,
+        totalStore,
+        totalCallCurrMonth
+      };
+
+      console.log(summaryObj)
 
       
-    // let totalStore = getMonthSummary.error
-    //  ? 1 
-    //  : getMonthSummary?.summary?.totalStore + 1;
-    
-    //  let totalCallCurrMonth = getMonthSummary.error
-    //  ? 1 
-    //  : getMonthSummary?.summary?.totalCallCurrMonth + 1;
-
-    const incTotalAskRev = reviewAsk === "yes" ? true : false;
-    const incTotalReviewGive = reviewGiven === "yes" ? true : false;
-     
-    const summaryObj = {
-      incUniqueCalls: true,
-      incTotalAskRev,
-      incTotalReviewGive,
-      incTotalStore : true,
-      incTotalCallCurrMonth:true
-     
-    };
-
     //post data to client  api
 
     fetch("http://localhost:3001/api/client", {
@@ -96,60 +247,61 @@ const Addclient = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if(data.existsClient){
+        console.log(data)
+        if (data.existsClient) {
           toast.success(data.message);
           setaAdStoreTitle({
             ...addStoreTitle,
             storeTitle: '',
           });
           upSummaryFnc();
-        }else{
-          toast.warn(data.error)
           
-       
+        } else {
+          toast.warn(data.error)
+
+
         }
-        
+
       })
-      .catch(error =>{
+      .catch(error => {
         toast.error('Something went wrong');
       })
 
     //post data to summary API
-    const upSummaryFnc = () =>{
-
-    fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`,{
-        method:'PUT',
-        headers:{
-            'content-type': 'application/json'
+    const upSummaryFnc = () => {
+      
+      fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`, {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json'
         },
         body: JSON.stringify(summaryObj)
-    })
-    .then(res => res.json())
-    .then(data => {
-      if(data.result.acknowledged){
-         navigate('/')
-        toast.success('Updated Summary');
-       setaAdStoreTitle({...addStoreTitle,reviewAsk:'yes',reviewGiven:'no'});
-      }
-      else{
-        console.log(data)
-        toast.warn('Summary updated failed');
-      }
-        
-        
-    })
-    .catch(error =>{
-      toast.error('Something went wrong')
-    })
-  }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.result.acknowledged) {
+            navigate('/')
+            toast.success('Updated Summary');
+            setaAdStoreTitle({ ...addStoreTitle, reviewAsk: 'yes', reviewGiven: 'no' });
+          }
+          else {
+            console.log(data)
+            toast.warn('Summary updated failed');
+          }
+
+
+        })
+        .catch(error => {
+          toast.error('Something went wrong')
+        })
+    }
 
   };
-  console.log(addStoreTitle);
 
   return (
     <div className="form-container addClient">
       <h3 className="addClienttitle title text-center">
-       
+
         {addStoreTitle.storeTitle
           ? `StoreUrl: ${addStoreTitle.storeTitle} App: ${addStoreTitle.app}`
           : 'Add New Client'}
@@ -208,7 +360,7 @@ const Addclient = () => {
                 name="reviewAsk"
                 id="reviewAskY"
                 value="yes"
-                defaultChecked ={addStoreTitle.reviewAsk === 'yes' ? true : false}
+                defaultChecked={addStoreTitle.reviewAsk === 'yes' ? true : false}
               />
               <label>Yes</label>
 
@@ -227,7 +379,7 @@ const Addclient = () => {
                       name="reviewGiven"
                       id="reviewGivenY"
                       value="yes"
-                      defaultChecked ={addStoreTitle.reviewGiven === 'yes' ? true : false}
+                      defaultChecked={addStoreTitle.reviewGiven === 'yes' ? true : false}
                     />
                     <label>Yes</label>
                     <div className="reviewGivenCele">
@@ -249,7 +401,7 @@ const Addclient = () => {
                       name="reviewGiven"
                       id="reviewGivenN"
                       value="no"
-                      defaultChecked ={addStoreTitle.reviewGiven === 'no' ? true : false}
+                      defaultChecked={addStoreTitle.reviewGiven === 'no' ? true : false}
                     />
                     <label>No</label>
                     <div className="reasonDiv">
@@ -279,7 +431,7 @@ const Addclient = () => {
                 name="reviewAsk"
                 id="reviewAskN"
                 value="no"
-                defaultChecked ={addStoreTitle.reviewAsk === 'no' ? true : false}
+                defaultChecked={addStoreTitle.reviewAsk === 'no' ? true : false}
               />
               <label>No</label>
               <div className="reasonDiv">
@@ -293,25 +445,40 @@ const Addclient = () => {
             </div>
           </div>
           <div className="askAgainReview storeDev">
-                            <label>Developer Or Not</label>
-                            <input type="checkbox" name="storeDev" id="storeDev"/>
-                            </div>
+            <label>Developer Or Not</label>
+            <input type="checkbox" name="storeDev" id="storeDev" />
+          </div>
           <div className="selectApp">
             <label>Select App</label>
-            <select defaultValue={addStoreTitle.app} name="selectApp">
+            <select defaultValue={addStoreTitle.app} onChange={(e) => setChooseApp(e.target.value)} name="selectApp">
               <option value="ib">Inkybay</option>
               <option value="mv">Multivariants</option>
               <option value="dr">Discount Ray</option>
             </select>
           </div>
+          <div className="revReason">
+            <label>Select Reason for Not Asking Review</label>
+            <select defaultValue={'notapplicable'} name="revReasonNotAsking">
+              <option value="notapplicable">Not Applicable</option>
+              <option value="requirementNotMatch">Requirement doens't Match</option>
+              <option value="developer">Developer</option>
+              <option value="taskAdded">Task Added</option>
+              <option value="left">Left</option>
+              <option value="newExploring">New Exploring</option>
+              <option value="saidSureLeaveLater">Said sure. I will leave a review</option>
+              <option value="resQtyDiscount">Want Quantity Discount</option>
+              <option value="leftMiddleCon">Left-Middle of conversation</option>
+            </select>
+          </div>
+
           <div className="clientType">
-                            <label>Select Client Type(For ask Review)</label>
-                            <select defaultValue={"safe"} name="clientType">
-                                <option value="safe">Safe</option>
-                                <option value="try">Give it A Try</option>
-                                <option value="risky">Risky</option>
-                                <option value="danger">Danger</option>
-                            </select>
+            <label>Select Client Type(For ask Review)</label>
+            <select defaultValue={"safe"} name="clientType">
+              <option value="safe">Safe</option>
+              <option value="try">Give it A Try</option>
+              <option value="risky">Risky</option>
+              <option value="danger">Danger</option>
+            </select>
           </div>
         </div>
 

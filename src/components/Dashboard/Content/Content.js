@@ -78,7 +78,7 @@ const Content = () => {
 
 
         const getUpdateClientCall = clients.find(client => client._id === clickClientId);
-        console.log(getUpdateClientCall);
+        //console.log(getUpdateClientCall);
 
         const increaseCalls = parseInt(getUpdateClientCall.noOfCalls) + 1;
         const callThisMonth = getUpdateClientCall.callThisMonth === 0 ? getUpdateClientCall.callThisMonth + 1 : getUpdateClientCall.callThisMonth;
@@ -117,12 +117,11 @@ const Content = () => {
 
             // const totalCallCurrMonth = getMonthSummaryData.error ?  1 : getMonthSummaryData?.totalCallCurrMonth + 1; 
 
-            const incTotalStore = getUpdateClientCall.callThisMonth === 0 ? true : false;
-            const incTotalCallCurrMonth = true;
+            
 
-            const updateSummaryData = { incTotalStore, incTotalCallCurrMonth }
+            const updateSummaryData = {storeUrl:getUpdateClientCall.storeUrl}
             //update data to summary API
-            const urlSum = `http://localhost:3001/api/summary/${currMonth}-${currYear}/${getUpdateClientCall.app}`;
+            const urlSum = `http://localhost:3001/api/summary/dashboard/${currMonth}-${currYear}/${getUpdateClientCall.app}`;
             console.log(urlSum)
             fetch(urlSum, {
                 method: 'PUT',
