@@ -241,7 +241,7 @@ const Updateclient = () => {
         let revReason = [];
 
         if(Object.keys(getSummaryData).length === 0){
-            console.log("from not find summary");
+            //console.log("from not find summary");
 
             totalStoreCallThisMonth = e.target.increaseCall.checked ? [storeUrl] : [];
 
@@ -329,7 +329,7 @@ const Updateclient = () => {
 
         }
     }
-        console.log(summaryObj);
+        //console.log(summaryObj);
 
 
         // post data to api 
@@ -339,85 +339,85 @@ const Updateclient = () => {
 
 
 
-        // if (
-        //     storeUrl !== updateClientData.storeUrl ||
-        //     bType !== updateClientData.bType ||
-        //     reasonFromGivRev !== updateClientData.reasonFromGivRev ||
-        //     reasonFromAskRev !== updateClientData.reasonFromAskRev ||
-        //     comment !== updateClientData.comment ||
-        //     app !== updateClientData.app ||
-        //     reviewAsk !== updateClientData.reviewAsk ||
-        //     reviewGiven !== updateClientData.reviewGiven ||
-        //     clientType !== updateClientData.clientType ||
-        //     e.target.reviewAskAgain.checked ||
-        //     storeDev !== updateClientData.storeDev ||
-        //     revReasonNotAsking !== updateClientData.revReasonNotAsking
-        // ) {
+        if (
+            storeUrl !== updateClientData.storeUrl ||
+            bType !== updateClientData.bType ||
+            reasonFromGivRev !== updateClientData.reasonFromGivRev ||
+            reasonFromAskRev !== updateClientData.reasonFromAskRev ||
+            comment !== updateClientData.comment ||
+            app !== updateClientData.app ||
+            reviewAsk !== updateClientData.reviewAsk ||
+            reviewGiven !== updateClientData.reviewGiven ||
+            clientType !== updateClientData.clientType ||
+            e.target.reviewAskAgain.checked ||
+            storeDev !== updateClientData.storeDev ||
+            revReasonNotAsking !== updateClientData.revReasonNotAsking
+        ) {
 
 
-        //     fetch(`http://localhost:3001/api/client/${updateClientData._id}`, {
-        //         method: 'PUT',
-        //         headers: {
-        //             'content-type': 'application/json'
-        //         },
-        //         body: JSON.stringify(updatedClient)
-        //     })
-        //         .then(res => res.json())
-        //         .then(data => {
-        //             //console.log(data)
-        //             if (data.updatedClient.acknowledged) {
-        //                 toast.success('Updated Client Data  Successfully');
-        //                 // send updated data to API to upadte current data
-        //                 if (totalStoreCallThisMonth !== getSummaryData.totalStoreCallThisMonth ||
-        //                      totalAskRev !== getSummaryData.totalAskRev ||
-        //                      totalCallCurrMonth !== getSummaryData.totalCallCurrMonth ||
-        //                      totalReviewGive !== getSummaryData.totalReviewGive ||
-        //                      totalStore !== getSummaryData.totalStore ||
-        //                      revReason !== getSummaryData.revReason ||
-        //                      totalStoreAskRevThisMonth !== getSummaryData.totalStoreAskRevThisMonth ||
-        //                      totalStoreGivenRevThisMonth !== getSummaryData.totalStoreGivenRevThisMonth
+            fetch(`http://localhost:3001/api/client/${updateClientData._id}`, {
+                method: 'PUT',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(updatedClient)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    //console.log(data)
+                    if (data.updatedClient.acknowledged) {
+                        toast.success('Updated Client Data  Successfully');
+                        // send updated data to API to upadte current data
+                        if (totalStoreCallThisMonth !== getSummaryData.totalStoreCallThisMonth ||
+                             totalAskRev !== getSummaryData.totalAskRev ||
+                             totalCallCurrMonth !== getSummaryData.totalCallCurrMonth ||
+                             totalReviewGive !== getSummaryData.totalReviewGive ||
+                             totalStore !== getSummaryData.totalStore ||
+                             revReason !== getSummaryData.revReason ||
+                             totalStoreAskRevThisMonth !== getSummaryData.totalStoreAskRevThisMonth ||
+                             totalStoreGivenRevThisMonth !== getSummaryData.totalStoreGivenRevThisMonth
 
-        //                 ) {
-        //                     //console.log(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`)
-        //                     fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`, {
-        //                         method: 'PUT',
-        //                         headers: {
-        //                             'content-type': 'application/json'
-        //                         },
-        //                         body: JSON.stringify(summaryObj)
-        //                     })
-        //                         .then(res => res.json())
-        //                         .then(data => {
+                        ) {
+                            //console.log(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`)
+                            fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'content-type': 'application/json'
+                                },
+                                body: JSON.stringify(summaryObj)
+                            })
+                                .then(res => res.json())
+                                .then(data => {
 
-        //                             if (data.result.acknowledged) {
-        //                                 toast.success('Updated Summary Data  Successfully')
-        //                                 navigate('/')
-        //                             }
-        //                             else {
-        //                                 toast.error('Something wrong to update Summary data')
-        //                             }
-        //                         })
-        //                         .catch(error => {
-        //                             toast.error(error.message)
-        //                         })
-        //                     //console.log('if');
-        //                 }
-        //                 else {
-        //                     toast.warn('Nothing changes in Summary Data')
-        //                     navigate('/')
-        //                 }
+                                    if (data.message) {
+                                        toast.success('Updated Summary Data  Successfully')
+                                        navigate('/')
+                                    }
+                                    else {
+                                        toast.error('Something wrong to update Summary data')
+                                    }
+                                })
+                                .catch(error => {
+                                    toast.error(error.message)
+                                })
+                            //console.log('if');
+                        }
+                        else {
+                            toast.warn('Nothing changes in Summary Data')
+                            navigate('/')
+                        }
 
-        //             }
-        //             else {
-        //                 toast.error('Something went wrong in Client Data')
-        //             }
-        //         })
-        //         .catch(error => {
-        //             toast.error(error.message)
-        //         })
-        // } else {
-        //     toast.warn('Nothing changes in Client Data')
-        // }
+                    }
+                    else {
+                        toast.error('Something went wrong in Client Data')
+                    }
+                })
+                .catch(error => {
+                    toast.error(error.message)
+                })
+        } else {
+            toast.warn('Nothing changes in Client Data')
+        }
 
 
 

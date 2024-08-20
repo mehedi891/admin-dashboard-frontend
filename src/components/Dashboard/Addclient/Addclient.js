@@ -11,7 +11,7 @@ const Addclient = () => {
   const { addStoreTitle, setaAdStoreTitle, dataTemp } = useContext(DefaultContext);
   const { currMonth, currYear } = addStoreTitle;
   const [chooseApp, setChooseApp] = useState('ib');
-  const [getSummaryData,setgetSummaryData] = useState({});
+  const [getSummaryData, setgetSummaryData] = useState({});
 
   //client data get and create oibject
   // const handleAddClient = (e) => {
@@ -149,14 +149,14 @@ const Addclient = () => {
 
   useEffect(() => {
     fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${chooseApp}`)
-    .then(res=>res.json())
-    .then(data=>{
-      setgetSummaryData(data.summary)
-    })
-    .catch(err =>{
-      console.log(err)
-    })
-  }, [currMonth,currYear,chooseApp]);
+      .then(res => res.json())
+      .then(data => {
+        setgetSummaryData(data.summary)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }, [currMonth, currYear, chooseApp]);
   const handleAddClient = (e) => {
 
     e.preventDefault();
@@ -195,34 +195,32 @@ const Addclient = () => {
       reviewAskCount: reviewAsk === "yes" ? 1 : 0
     };
 
-    console.log('reviewAsk:',reviewAsk,'reviewGiven:',reviewGiven)
-    
+    //console.log('reviewAsk:',reviewAsk,'reviewGiven:',reviewGiven)
 
-    const isExisttotalStoreCallThisMonth = getSummaryData.totalStoreCallThisMonth;
-    const isExisttotalStoreGivenRevThisMonth = getSummaryData.totalStoreGivenRevThisMonth;
-    const isExisttotalStoreAskRevThisMonth = getSummaryData.totalStoreAskRevThisMonth;
+    let summaryObj = {};
+    let totalStoreCallThisMonth = [];
+    let totalStoreGivenRevThisMonth = [];
+    let totalStoreAskRevThisMonth = [];
+    let uniqueCalls = 0;
+    let totalAskRev = 0;
+    let totalReviewGive = 0;
+    let totalStore = 0;
+    let totalCallCurrMonth = 0;
+    let revReason = [];
+    if (Object.keys(getSummaryData).length === 0) {
+
+      totalStoreCallThisMonth = [storeUrl];
+      totalStoreGivenRevThisMonth = reviewGiven === "yes" ? [storeUrl] : [];
+      totalStoreAskRevThisMonth = reviewAsk === "yes" ? [storeUrl] : [];
+      uniqueCalls = 1;
+      totalAskRev = reviewAsk === "yes" ? 1 : 0;
+      totalReviewGive = reviewGiven === "yes" ? 1 : 0;
+      totalStore = 1;
+      totalCallCurrMonth = 1;
+      revReason = [{ [revReasonNotAsking]: 1 }]
 
 
-
-    const totalStoreCallThisMonth = isExisttotalStoreCallThisMonth.includes(storeUrl) ? isExisttotalStoreCallThisMonth : [...isExisttotalStoreCallThisMonth,storeUrl];
-
-    const totalStoreGivenRevThisMonth = reviewGiven === "yes" & !isExisttotalStoreGivenRevThisMonth.includes(storeUrl) ? [...isExisttotalStoreGivenRevThisMonth,storeUrl] : isExisttotalStoreGivenRevThisMonth;
-
-    const totalStoreAskRevThisMonth = reviewAsk === "yes" & !isExisttotalStoreAskRevThisMonth.includes(storeUrl) ? [...isExisttotalStoreAskRevThisMonth,storeUrl] : isExisttotalStoreAskRevThisMonth;
-
-    const uniqueCalls = getSummaryData.uniqueCalls + 1;
-
-    const totalAskRev =  reviewAsk === "yes" & !isExisttotalStoreAskRevThisMonth.includes(storeUrl) ? getSummaryData.totalAskRev + 1 : getSummaryData.totalAskRev;
-
-    const totalReviewGive = reviewGiven === "yes" & !isExisttotalStoreGivenRevThisMonth.includes(storeUrl) ? getSummaryData.totalReviewGive + 1 : getSummaryData.totalReviewGive;
-
-    const totalStore = getSummaryData.totalStore + 1 ;
-
-    const totalCallCurrMonth = getSummaryData.totalCallCurrMonth + 1;
-    
-
-  
-      const summaryObj = {
+      summaryObj = {
         totalStoreCallThisMonth,
         totalStoreGivenRevThisMonth,
         totalStoreAskRevThisMonth,
@@ -230,12 +228,75 @@ const Addclient = () => {
         totalAskRev,
         totalReviewGive,
         totalStore,
-        totalCallCurrMonth
+        totalCallCurrMonth,
+        revReason,
+        app
+
+      }
+
+    } else {
+
+
+      const isExisttotalStoreCallThisMonth = getSummaryData.totalStoreCallThisMonth;
+      const isExisttotalStoreGivenRevThisMonth = getSummaryData.totalStoreGivenRevThisMonth;
+      const isExisttotalStoreAskRevThisMonth = getSummaryData.totalStoreAskRevThisMonth;
+
+
+
+      totalStoreCallThisMonth = isExisttotalStoreCallThisMonth.includes(storeUrl) ? isExisttotalStoreCallThisMonth : [...isExisttotalStoreCallThisMonth, storeUrl];
+
+      totalStoreGivenRevThisMonth = reviewGiven === "yes" & !isExisttotalStoreGivenRevThisMonth.includes(storeUrl) ? [...isExisttotalStoreGivenRevThisMonth, storeUrl] : isExisttotalStoreGivenRevThisMonth;
+
+      totalStoreAskRevThisMonth = reviewAsk === "yes" & !isExisttotalStoreAskRevThisMonth.includes(storeUrl) ? [...isExisttotalStoreAskRevThisMonth, storeUrl] : isExisttotalStoreAskRevThisMonth;
+
+      uniqueCalls = getSummaryData.uniqueCalls + 1;
+
+      totalAskRev = reviewAsk === "yes" & !isExisttotalStoreAskRevThisMonth.includes(storeUrl) ? getSummaryData.totalAskRev + 1 : getSummaryData.totalAskRev;
+
+      totalReviewGive = reviewGiven === "yes" & !isExisttotalStoreGivenRevThisMonth.includes(storeUrl) ? getSummaryData.totalReviewGive + 1 : getSummaryData.totalReviewGive;
+
+      totalStore = getSummaryData.totalStore + 1;
+
+      totalCallCurrMonth = getSummaryData.totalCallCurrMonth + 1;
+      
+      revReason = getSummaryData.revReason;
+
+
+      if (revReason && revReason.length > 0) {
+        const newRevReason = revReason.find((obj) => [revReasonNotAsking] in obj);
+        if (newRevReason) {
+          newRevReason[revReasonNotAsking] = newRevReason[revReasonNotAsking] + 1;
+          revReason = [...revReason];
+
+          //console.log('inner if:',revReason)
+        } else {
+          revReason = [...revReason, { [revReasonNotAsking]: 1 }]
+          //console.log('inner else',revReason)
+        }
+      } else {
+        revReason = [{ [revReasonNotAsking]: 1 }]
+        //console.log('outer else',revReason)
+      }
+
+      summaryObj = {
+        totalStoreCallThisMonth,
+        totalStoreGivenRevThisMonth,
+        totalStoreAskRevThisMonth,
+        uniqueCalls,
+        totalAskRev,
+        totalReviewGive,
+        totalStore,
+        totalCallCurrMonth,
+        revReason,
+        app
       };
 
-      console.log(summaryObj)
+    }
 
-      
+
+    //console.log(summaryObj)
+
+
     //post data to client  api
 
     fetch("http://localhost:3001/api/client", {
@@ -255,7 +316,7 @@ const Addclient = () => {
             storeTitle: '',
           });
           upSummaryFnc();
-          
+
         } else {
           toast.warn(data.error)
 
@@ -269,7 +330,7 @@ const Addclient = () => {
 
     //post data to summary API
     const upSummaryFnc = () => {
-      
+
       fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`, {
         method: 'PUT',
         headers: {
@@ -279,7 +340,7 @@ const Addclient = () => {
       })
         .then(res => res.json())
         .then(data => {
-          if (data.result.acknowledged) {
+          if (data.message) {
             navigate('/')
             toast.success('Updated Summary');
             setaAdStoreTitle({ ...addStoreTitle, reviewAsk: 'yes', reviewGiven: 'no' });

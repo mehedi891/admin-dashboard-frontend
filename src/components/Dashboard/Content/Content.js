@@ -122,7 +122,7 @@ const Content = () => {
             const updateSummaryData = {storeUrl:getUpdateClientCall.storeUrl}
             //update data to summary API
             const urlSum = `http://localhost:3001/api/summary/dashboard/${currMonth}-${currYear}/${getUpdateClientCall.app}`;
-            console.log(urlSum)
+            //console.log(urlSum)
             fetch(urlSum, {
                 method: 'PUT',
                 headers: {
@@ -132,7 +132,7 @@ const Content = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.result.acknowledged) {
+                    if (data.message) {
                         toast.success('Updated Data and Call Successfully')
                     }
                     else {

@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { DefaultContext } from '../../context/DefaultContext/Context';
 
 import './Summary.css';
+import Totalstore from './Totalstore/Totalstore';
 
 
 const Summary = () => { 
@@ -82,7 +83,7 @@ const url = `http://localhost:3001/api/summary/${otherMonth}-${otherYear}/${choo
 
     }
 
-
+    //console.log(Object.keys(getSUmmaryData.summary).length)
   
 
     //conditional destructure from summary API data
@@ -91,6 +92,10 @@ const {totalAskRev,totalCallCurrMonth,totalReviewGive,totalStore,uniqueCalls} = 
     return (
         <div className='summary-conatiner'>
             <h2>Total Summary : {getSUmmaryData.message ? getSUmmaryData.message  :getSUmmaryData?.monthName} for {chooseApp} </h2>
+           
+       
+           
+           
             <div className='search-summary-container'>
 
                 <form className='showTotalSummary'>
@@ -160,7 +165,11 @@ const {totalAskRev,totalCallCurrMonth,totalReviewGive,totalStore,uniqueCalls} = 
 
             </div>
 
+            {
+                chooseApp != 'total' ? Object.keys(getSUmmaryData.summary).length > 0 && <Totalstore key={getSUmmaryData.summary.id} getSUmmaryData={getSUmmaryData}></Totalstore> : ''
+            }
 
+            
 
 
       
