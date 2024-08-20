@@ -6,7 +6,7 @@ const useGetClientCount = () => {
 
     useEffect(() => {
         
-            fetch('http://localhost:3001/api/client/allclientcount')
+            fetch('https://amin-dashboard-backend.onrender.com/api/client/allclientcount')
             .then(res => res.json())
             .then(data => setClientCount(data))
             .catch(error => {

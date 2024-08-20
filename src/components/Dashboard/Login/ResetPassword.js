@@ -14,7 +14,7 @@ function ResetPassword() {
 
         const userObj = {password};
 
-        fetch(`http://localhost:3001/api/user/${email}`,{
+        fetch(`https://amin-dashboard-backend.onrender.com/api/user/${email}`,{
             method:'PUT',
             headers:{
                 'content-type': 'application/json'

@@ -20,7 +20,7 @@ function ManageUser() {
         //delete user api call
 
         if(window.confirm('Are you sure? Want to Delete the user !!!')){
-        fetch(`http://localhost:3001/api/user/${id}`,{
+        fetch(`https://amin-dashboard-backend.onrender.com/api/user/${id}`,{
             method:'DELETE',
             headers:{
                 'content-type':'application/json',

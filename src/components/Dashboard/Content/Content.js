@@ -41,7 +41,7 @@ const Content = () => {
     const { currMonth, currYear } = addStoreTitle;
 
     useEffect(() => {
-        fetch(`http://localhost:3001/api/client/?page=${page}&size=${size}`)
+        fetch(`https://amin-dashboard-backend.onrender.com/api/client/?page=${page}&size=${size}`)
             .then(res => res.json())
             .then(data => {
                 setClients(data);
@@ -54,7 +54,7 @@ const Content = () => {
 
 
     useEffect(() => {
-        fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/total`)
+        fetch(`https://amin-dashboard-backend.onrender.com/api/summary/${currMonth}-${currYear}/total`)
             .then(res => res.json())
             .then(data => {
                 if (data.summary) {
@@ -88,7 +88,7 @@ const Content = () => {
 
 
             //post client id to server
-            const url = `http://localhost:3001/api/client/${clickClientId}`;
+            const url = `https://amin-dashboard-backend.onrender.com/api/client/${clickClientId}`;
             console.log(url)
             fetch(url, {
                 method: 'PUT',
@@ -121,7 +121,7 @@ const Content = () => {
 
             const updateSummaryData = {storeUrl:getUpdateClientCall.storeUrl}
             //update data to summary API
-            const urlSum = `http://localhost:3001/api/summary/dashboard/${currMonth}-${currYear}/${getUpdateClientCall.app}`;
+            const urlSum = `https://amin-dashboard-backend.onrender.com/api/summary/dashboard/${currMonth}-${currYear}/${getUpdateClientCall.app}`;
             //console.log(urlSum)
             fetch(urlSum, {
                 method: 'PUT',
@@ -149,7 +149,7 @@ const Content = () => {
 
     const deleteClientTopage = (id) => {
         if (window.confirm('Are you sure? want to Delete!!!')) {
-            fetch(`http://localhost:3001/api/client/${id}`, {
+            fetch(`https://amin-dashboard-backend.onrender.com/api/client/${id}`, {
                 method: 'DELETE',
             })
                 .then(res => res.json())

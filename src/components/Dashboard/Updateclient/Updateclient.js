@@ -17,7 +17,7 @@ const Updateclient = () => {
 
     useEffect(() => {
 
-        fetch(`http://localhost:3001/api/client/${id}`)
+        fetch(`https://amin-dashboard-backend.onrender.com/api/client/${id}`)
             .then(res => res.json())
             .then(data => {
                 setUpdateClientData(data)
@@ -31,7 +31,7 @@ const Updateclient = () => {
         if (updateClientData.app) {
 
 
-            fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${updateClientData.app}`)
+            fetch(`https://amin-dashboard-backend.onrender.com/api/summary/${currMonth}-${currYear}/${updateClientData.app}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.summary) {
@@ -106,7 +106,7 @@ const Updateclient = () => {
 
 
     //     if(updateClientData?.revReasonNotAsking !== revReasonNotAsking){
-    //         fetch(`http://localhost:3001/api/summary/rev-reason/${currMonth}-${currYear}/${app}`, {
+    //         fetch(`https://amin-dashboard-backend.onrender.com/api/summary/rev-reason/${currMonth}-${currYear}/${app}`, {
     //             method: 'PUT',
     //             headers: {
     //                 'content-type': 'application/json'
@@ -141,7 +141,7 @@ const Updateclient = () => {
     //     ) {
 
 
-    //         fetch(`http://localhost:3001/api/client/${updateClientData._id}`, {
+    //         fetch(`https://amin-dashboard-backend.onrender.com/api/client/${updateClientData._id}`, {
     //             method: 'PUT',
     //             headers: {
     //                 'content-type': 'application/json'
@@ -155,8 +155,8 @@ const Updateclient = () => {
     //                     toast.success('Updated Client Data  Successfully');
     //                     // send updated data to API to upadte current data
     //                     if (updateClientData.reviewAskCount !== reviewAskCount || reviewGiven !== updateClientData.reviewGiven || increaseCall) {
-    //                         //console.log(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`)
-    //                         fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`, {
+    //                         //console.log(`https://amin-dashboard-backend.onrender.com/api/summary/${currMonth}-${currYear}/${app}`)
+    //                         fetch(`https://amin-dashboard-backend.onrender.com/api/summary/${currMonth}-${currYear}/${app}`, {
     //                             method: 'PUT',
     //                             headers: {
     //                                 'content-type': 'application/json'
@@ -355,7 +355,7 @@ const Updateclient = () => {
         ) {
 
 
-            fetch(`http://localhost:3001/api/client/${updateClientData._id}`, {
+            fetch(`https://amin-dashboard-backend.onrender.com/api/client/${updateClientData._id}`, {
                 method: 'PUT',
                 headers: {
                     'content-type': 'application/json'
@@ -378,8 +378,8 @@ const Updateclient = () => {
                              totalStoreGivenRevThisMonth !== getSummaryData.totalStoreGivenRevThisMonth
 
                         ) {
-                            //console.log(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`)
-                            fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`, {
+                            //console.log(`https://amin-dashboard-backend.onrender.com/api/summary/${currMonth}-${currYear}/${app}`)
+                            fetch(`https://amin-dashboard-backend.onrender.com/api/summary/${currMonth}-${currYear}/${app}`, {
                                 method: 'PUT',
                                 headers: {
                                     'content-type': 'application/json'

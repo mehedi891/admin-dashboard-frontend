@@ -17,7 +17,7 @@ e.preventDefault();
 
    //create a user in database
 
-   fetch(`http://localhost:3001/api/user/register`,{
+   fetch(`https://amin-dashboard-backend.onrender.com/api/user/register`,{
     method:'POST',
     headers:{
         'content-type': 'application/json'

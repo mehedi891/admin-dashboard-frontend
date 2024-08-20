@@ -20,7 +20,7 @@ function Updatereview() {
     const otherMonth = getMonthData.toString().length === 1 ? '0' + getMonthData : getMonthData;
     const otherYear = getDate?.split('-')[0];
     useEffect(() => {
-        const url = `http://localhost:3001/api/summary/${otherMonth}-${otherYear}/${chooseApp}`;
+        const url = `https://amin-dashboard-backend.onrender.com/api/summary/${otherMonth}-${otherYear}/${chooseApp}`;
 
         //console.log(url)
         fetch(url)
@@ -37,7 +37,7 @@ function Updatereview() {
     }, [getDate, otherMonth, otherYear, chooseApp]);
 
     useEffect(() => {
-        fetch(`http://localhost:3001/api/client/${id}`)
+        fetch(`https://amin-dashboard-backend.onrender.com/api/client/${id}`)
             .then(res => res.json())
             .then(data => {
                 setCData(data);
@@ -73,7 +73,7 @@ function Updatereview() {
             cData.reviewGiven !== reviewGiven||
             cData.reviewAsk !== reviewAsk
         ){
-            fetch(`http://localhost:3001/api/client/${cData._id}`, {
+            fetch(`https://amin-dashboard-backend.onrender.com/api/client/${cData._id}`, {
                 method: 'PUT',
                 headers: {
                     'content-type': 'application/json'
@@ -86,7 +86,7 @@ function Updatereview() {
                    if(data.updatedClient.acknowledged){
                 
                     toast.success(`Review Data Updated for Client ${cData.storeUrl}`);
-                    fetch(`http://localhost:3001/api/summary/${otherMonth}-${otherYear}/${cData.app}`, {
+                    fetch(`https://amin-dashboard-backend.onrender.com/api/summary/${otherMonth}-${otherYear}/${cData.app}`, {
                         method: 'PUT',
                         headers: {
                             'content-type': 'application/json'

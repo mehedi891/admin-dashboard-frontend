@@ -4,7 +4,7 @@ const useGetClientData = () =>{
     const [allCLient,setAllClient] = useState([]);
 
     useEffect(()=>{
-        fetch('http://localhost:3001/api/client')
+        fetch('https://amin-dashboard-backend.onrender.com/api/client')
         .then(res => res.json())
         .then(data => setAllClient(data))
         .catch(error => {

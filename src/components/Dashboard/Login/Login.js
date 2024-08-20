@@ -21,7 +21,7 @@ const navigate = useNavigate();
 
         //login api 
 
-        fetch('http://localhost:3001/api/user/login',{
+        fetch('https://amin-dashboard-backend.onrender.com/api/user/login',{
             method:'POST',
             headers:{
                 'content-type': 'application/json'
@@ -50,7 +50,7 @@ const navigate = useNavigate();
 
         // update online status true
 
-        fetch(`http://localhost:3001/api/user/${email}`,{
+        fetch(`https://amin-dashboard-backend.onrender.com/api/user/${email}`,{
             method:'PUT',
             headers:{
                 'content-type': 'application/json'

@@ -89,7 +89,7 @@ const Addclient = () => {
 
   //   //post data to client  api
 
-  //   fetch("http://localhost:3001/api/client", {
+  //   fetch("https://amin-dashboard-backend.onrender.com/api/client", {
   //     method: "POST",
   //     headers: {
   //       "content-type": "application/json",
@@ -119,7 +119,7 @@ const Addclient = () => {
   //   //post data to summary API
   //   const upSummaryFnc = () =>{
 
-  //   fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`,{
+  //   fetch(`https://amin-dashboard-backend.onrender.com/api/summary/${currMonth}-${currYear}/${app}`,{
   //       method:'PUT',
   //       headers:{
   //           'content-type': 'application/json'
@@ -148,7 +148,7 @@ const Addclient = () => {
   // };
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${chooseApp}`)
+    fetch(`https://amin-dashboard-backend.onrender.com/api/summary/${currMonth}-${currYear}/${chooseApp}`)
       .then(res => res.json())
       .then(data => {
         setgetSummaryData(data.summary)
@@ -258,7 +258,7 @@ const Addclient = () => {
       totalStore = getSummaryData.totalStore + 1;
 
       totalCallCurrMonth = getSummaryData.totalCallCurrMonth + 1;
-      
+
       revReason = getSummaryData.revReason;
 
 
@@ -299,7 +299,7 @@ const Addclient = () => {
 
     //post data to client  api
 
-    fetch("http://localhost:3001/api/client", {
+    fetch("https://amin-dashboard-backend.onrender.com/api/client", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -331,7 +331,7 @@ const Addclient = () => {
     //post data to summary API
     const upSummaryFnc = () => {
 
-      fetch(`http://localhost:3001/api/summary/${currMonth}-${currYear}/${app}`, {
+      fetch(`https://amin-dashboard-backend.onrender.com/api/summary/${currMonth}-${currYear}/${app}`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json'

@@ -7,7 +7,7 @@ const useSummaryget = () =>{
 
     useEffect(()=>{
 
-        fetch('http://localhost:3001/summary')
+        fetch('https://amin-dashboard-backend.onrender.com/summary')
         .then(res => res.json())
         .then(data => setGetSummary(data))
 

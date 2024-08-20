@@ -13,7 +13,7 @@ const Header = () => {
         localStorage.removeItem('loginToken');
 
         // set online status false in API 
-         fetch(`http://localhost:3001/api/user/${dataTemp.login.email}`,{
+         fetch(`https://amin-dashboard-backend.onrender.com/api/user/${dataTemp.login.email}`,{
             method:'PUT',
             headers:{
                 'content-type': 'application/json'
@@ -33,7 +33,7 @@ const Header = () => {
    
 
     useEffect(()=>{
-        fetch('http://localhost:3001/api/user/online/useronline')
+        fetch('https://amin-dashboard-backend.onrender.com/api/user/online/useronline')
      .then(res => res.json())
      .then(data => {
         setOnlineUsers(data);

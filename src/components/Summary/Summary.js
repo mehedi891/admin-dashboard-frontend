@@ -28,7 +28,7 @@ const Summary = () => {
 
 
     useEffect(() => {
-const url = `http://localhost:3001/api/summary/${otherMonth}-${otherYear}/${chooseApp}`;
+const url = `https://amin-dashboard-backend.onrender.com/api/summary/${otherMonth}-${otherYear}/${chooseApp}`;
 
 //console.log(url)
         fetch(url)
@@ -57,7 +57,7 @@ const url = `http://localhost:3001/api/summary/${otherMonth}-${otherYear}/${choo
 
         //sending data to backend
         if(window.confirm('Are you sure !!!!')){
-        fetch('http://localhost:3001/api/client',{
+        fetch('https://amin-dashboard-backend.onrender.com/api/client',{
             method: 'PUT',
             headers:{
                 'content-type': 'application/json'

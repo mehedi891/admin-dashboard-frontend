@@ -6,7 +6,7 @@ const useGetAllUsers = () => {
 
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/user/')
+        fetch('https://amin-dashboard-backend.onrender.com/api/user/')
         .then(res => res.json())
         .then(data => setUsers(data))
         .catch(error => {

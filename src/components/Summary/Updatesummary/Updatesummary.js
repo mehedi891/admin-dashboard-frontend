@@ -19,7 +19,7 @@ function Updatesummary() {
         const otherMonth = getMonthData.toString().length === 1 ? '0' + getMonthData : getMonthData;
         const otherYear = getDate?.split('-')[0];
     useEffect(() => {
-        const url = `http://localhost:3001/api/summary/${otherMonth}-${otherYear}/${chooseApp}`;
+        const url = `https://amin-dashboard-backend.onrender.com/api/summary/${otherMonth}-${otherYear}/${chooseApp}`;
         
         //console.log(url)
                 fetch(url)
@@ -51,7 +51,7 @@ function Updatesummary() {
        
         //console.log(updatedSummaryData);
 
-        fetch(`http://localhost:3001/api/summary/${otherMonth}-${otherYear}/${chooseApp}`, {
+        fetch(`https://amin-dashboard-backend.onrender.com/api/summary/${otherMonth}-${otherYear}/${chooseApp}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
